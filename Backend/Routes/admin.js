@@ -4,7 +4,7 @@ const admin=require("../Controller/admin")
 
 
 router.post("/signup",admin.Signup)
-router.get("/login",admin.login)
+router.post("/login",admin.login)
 router.get("/logout",admin.logout)
 
 module.exports=router

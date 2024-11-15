@@ -8,10 +8,8 @@ passport.use(new GoogleStrategy({
     callbackURL: 'http://localhost:3001/user/callback',
 }, async (accessToken, refreshToken, profile, done) => {
     try {
-        // Check if the user exists in your database
         let user = await usermodel.findOne({ e_mail: profile.emails[0].value });
 
-        // If the user doesn’t exist, create a new one
         if (!user) {
 
             user = new usermodel({
@@ -27,7 +25,6 @@ passport.use(new GoogleStrategy({
             await user.save();
         }
 
-        // Pass user to the next step
         return done(null, user);
     } catch (err) {
         return done(err, null);

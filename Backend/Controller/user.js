@@ -6,7 +6,7 @@ const usermodel=require("../Models/user")
 const productmodel=require("../Models/produit")
 const EmailValidation=require("../Models/EmailValidation")
 const {setcookies} = require("../utils/generateToken");
-const {verifyTokenS} = require("../utils/VerifyTokenS");
+// const {verifyTokenS} = require("../utils/VerifyTokenS");
 const {Types} = require("mongoose");
 
 exports.Signup=async (req,res)=> {
@@ -79,7 +79,6 @@ exports.login=async (req,res)=> {
             Password:req.body.Password
         })
         if (!validation.success){
-            //@ts-ignore
 
             return res.status(400).json({message:validation.error.errors[0].message})
 
@@ -262,6 +261,118 @@ exports.addRoomDevice=async (req,res)=> {
         res.status(400).json({ err });
     }
 }
+exports.deleteroom = async (req, res) => {
+    try {
+        const user = await usermodel.findOne({ _id: req.user._id });
+
+        if (!user) {
+            return res.status(400).json({ message: "User does not exist" });
+        }
+
+        const roomIndex = user.Rooms.findIndex(room => room._id.toString() === req.params.id);
+
+        if (roomIndex === -1) {
+            return res.status(404).json({ message: "Room not found" });
+        }
+
+        user.Rooms.splice(roomIndex, 1);
+
+        await user.save();
+
+        res.status(200).json({ message: "Room deleted successfully" });
+    } catch (err) {
+        res.status(400).json({ err });
+    }
+};
+exports.getAllRooms = async (req, res) => {
+    try {
+        const user = await usermodel.findOne({ _id: req.user._id });
+
+        if (!user) {
+            return res.status(400).json({ message: "User does not exist" });
+        }
+
+        res.status(200).json({ rooms: user.Rooms });
+    } catch (err) {
+        res.status(400).json({ err });
+    }
+};
+
+exports.updateroom = async (req, res) => {
+    try {
+        const user = await usermodel.findOne({ _id: req.user._id });
+
+        if (!user) {
+            return res.status(400).json({ message: "User does not exist" });
+        }
+
+        const room = user.Rooms.find(room => room._id.toString() === req.params.id);
+
+        if (!room) {
+            return res.status(404).json({ message: "Room not found" });
+        }
+
+        room.name = req.body.name;
+
+        await user.save();
+
+        res.status(200).json({ message: "Room updated successfully" });
+    } catch (err) {
+        res.status(400).json({ err });
+    }
+};
+exports.deleteRoomDevice = async (req, res) => {
+    try {
+        const user = await usermodel.findOne({ _id: req.user._id });
+
+        if (!user) {
+            return res.status(400).json({ message: "User does not exist" });
+        }
+
+        const room = user.Rooms.find(room => room._id.toString() === req.params.roomId);
+        if (!room) {
+            return res.status(404).json({ message: "Room not found" });
+        }
+
+        const deviceIndex = room.devices.findIndex(device => device._id.toString() === req.params.deviceId);
+
+        if (deviceIndex === -1) {
+            return res.status(404).json({ message: "Device not found" });
+        }
+
+        room.devices.splice(deviceIndex, 1);
+
+        await user.save();
+
+        res.status(200).json({ message: "Device deleted successfully" });
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({ err });
+    }
+};
+exports.getRoomDevices = async (req, res) => {
+    try {
+        const user = await usermodel.findOne({ _id: req.user._id });
+
+        if (!user) {
+            return res.status(400).json({ message: "User does not exist" });
+        }
+
+        const room = user.Rooms.find(room => room._id.toString() === req.params.roomId);
+        if (!room) {
+            return res.status(404).json({ message: "Room not found" });
+        }
+
+        res.status(200).json({ devices: room.devices });
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({ err });
+    }
+};
+
+
+
+
 
 
 

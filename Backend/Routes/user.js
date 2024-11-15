@@ -10,10 +10,15 @@ const {UserAuth} = require("../utils/UserAuth");
 
 router.post("/signup",user.Signup)
 router.post("/verify/:activationcode/:id",user.AccountActivation)
-router.get("/login",user.login)
+router.post("/login",user.login)
 router.get("/logout",user.logout)
-router.get("/room",UserAuth,user.addroom)
-router.get("/get/:modelid/:roomId",UserAuth,user.addRoomDevice)
+router.post("/room",UserAuth,user.addroom)
+router.delete("/delroom/:id",UserAuth,user.deleteroom)
+router.put("/updateroom/:id",UserAuth,user.updateroom)
+router.get("/getallroom",UserAuth,user.getAllRooms)
+router.post("/adddevice/:modelid/:roomId",UserAuth,user.addRoomDevice)
+router.delete("/deletedevice/:deviceId/:roomId",UserAuth,user.deleteRoomDevice)
+router.get("/getroomdevices/:roomId",UserAuth,user.getRoomDevices)
 
 
 

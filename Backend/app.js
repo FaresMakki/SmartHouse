@@ -7,9 +7,11 @@ const Admin_Router=require("./Routes/admin")
 const Product_Router=require("./Routes/product")
 const cookieParser = require('cookie-parser');
 const passport = require('./utils/oauth');  // Ensure oauth.js is correctly imported
+const cors=require("cors")
 
 app.use(passport.initialize());
 
+app.use(cors())
 
 app.use(cookieParser());
 

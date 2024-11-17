@@ -36,9 +36,9 @@ router.get('/callback', passport.authenticate('google', { failureRedirect: '/',s
 
     const cookie=setcookies({ _id: req.user._id ,e_mail:req.user.e_mail})
 
-    res.cookie("jwttoken",cookie.value,cookie);
+    res.cookie("jwttoken",cookie.value,cookie.config);
 
-    res.redirect('http://localhost:3000/protected');
+    res.redirect('http://localhost:3000/home');
 });
 
 module.exports=router

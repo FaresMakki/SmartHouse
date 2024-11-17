@@ -104,10 +104,9 @@ exports.login=async (req,res)=> {
             Region:user.Region
 
         }
-
         const cookie=setcookies(jwtpayload)
 
-        res.status(200).cookie("jwttoken", cookie.value,cookie.config).json({ message: "user authenticated successfully" });
+        res.status(200).cookie("jwttoken", cookie.value,cookie.config).json({ success: "User authenticated successfully." });
 
     } catch (err) {
         res.status(400).json({ err });

@@ -10,14 +10,13 @@ const { serialize } = require("cookie")
 
 
 
-     return {
+     return {config:{
          httpOnly: true,
          secure: process.env.NODE_ENV === "production",
          sameSite: "strict",
          path: "/",
          maxAge: 60 * 60 * 24 * 30 * 1000,
-         value: token
-     };
+     },value:token};
 
 }
 module.exports = { setcookies };

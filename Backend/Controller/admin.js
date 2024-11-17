@@ -67,7 +67,7 @@ exports.login=async (req,res)=> {
         }
         const cookie=setcookies(jwtpayload)
 
-        res.status(200).cookie("jwttoken", cookie.value,cookie).json({ message: "admin authenticated successfully" });
+        res.status(200).cookie("jwttoken", cookie.value,cookie.config).json({ message: "admin authenticated successfully" });
 
     } catch (err) {
         res.status(400).json({ err });

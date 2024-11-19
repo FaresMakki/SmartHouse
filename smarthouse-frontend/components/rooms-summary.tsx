@@ -79,18 +79,16 @@ export default function RoomList() {
                                         <TooltipTrigger asChild>
                                             <button
                                                 onClick={() => toggleRoomState(room.name)}
-                                                className={`h-8 w-8 rounded-full border-2 ${
-                                                    roomStates[room.name]
-                                                        ? 'bg-green-600 border-green-700'
-                                                        : 'bg-red-600 border-red-700'
-                                                } transition-colors`}
+                                                className="h-8 w-8 flex items-center justify-center rounded-full border-2 border-gray-300"
                                                 aria-label={`${
                                                     roomStates[room.name] ? 'Turn off' : 'Turn on'
                                                 } devices in ${room.name}`}
                                             >
                                                 <Power
-                                                    className={`h-4 w-4 text-white mx-auto transition-transform ${
-                                                        roomStates[room.name] ? 'rotate-0' : 'rotate-180'
+                                                    className={`h-5 w-5 ${
+                                                        roomStates[room.name]
+                                                            ? 'text-green-600'
+                                                            : 'text-red-600'
                                                     }`}
                                                 />
                                             </button>

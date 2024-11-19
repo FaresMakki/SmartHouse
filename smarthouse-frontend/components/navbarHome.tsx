@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
-import {Home, Menu, X, LayoutDashboard, DoorOpen, Lightbulb, User, Settings, Sun, Moon} from 'lucide-react';
+import {Home, Menu, X, LayoutDashboard, DoorOpen, Lightbulb, User, Settings, Sun, Moon, LogOut} from 'lucide-react';
 import {Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
 import {motion} from "framer-motion";
 import {useState} from "react";
@@ -38,6 +38,11 @@ export default function Navbar() {
             <DropdownMenuItem className={`${mobile ? "text-lg" : ""}`}>
                 <Settings className="h-4 w-4 mr-2"/>
                 Settings
+            </DropdownMenuItem>
+            <hr/>
+            <DropdownMenuItem className={`${mobile ? "text-lg" : ""}`}>
+                <LogOut className="h-4 w-4 mr-2"/>
+                Logout
             </DropdownMenuItem>
         </>
     }
@@ -90,7 +95,7 @@ export default function Navbar() {
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" className="rounded-full">
-                                    <User className="h-5 w-5"/>
+                                    <User className="h-5 w-5 text"/>
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
@@ -140,6 +145,13 @@ export default function Navbar() {
                                 >
                                     <Settings className="h-5 w-5 mr-2"/>
                                     Settings
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    className="justify-start text-black text-lg hover:bg-gray-200 rounded-full px-4 py-2 w-full"
+                                >
+                                    <LogOut className="h-5 w-5 mr-2"/>
+                                    Logout
                                 </Button>
                             </div>
 

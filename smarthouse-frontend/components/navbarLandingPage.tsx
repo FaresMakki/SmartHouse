@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Home, Menu, X } from "lucide-react";
-import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
 import { motion } from "framer-motion";
 import { NavLink } from "@/utils-front/util";
 import { useState } from "react";
@@ -74,6 +74,7 @@ export function Navbar() {
                             side="right"
                             className="w-[240px] sm:w-[300px] bg-white p-4 rounded-l-3xl shadow-lg transition-transform duration-300 transform translate-x-2"
                         >
+                            <SheetTitle className={"hidden"}>Menu</SheetTitle>
                             <div className="flex flex-col space-y-4 mt-8">
                                 <NavItems mobile />
                                 <Link href="/auth/login">

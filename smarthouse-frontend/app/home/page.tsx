@@ -1,19 +1,27 @@
-import Navbar from "@/components/navbarHome";
+"use client"
+
+import React from 'react'
+import Navbar from '@/components/navbarHome'
 import ConsumptionHint from "@/components/consumption-hint";
-import DeviceList from "@/components/devices-summary-homepage";
+import {Footer} from "@/components/generalFooter";
 import RoomList from "@/components/rooms-summary";
+import DeviceList from "@/components/devices-summary-homepage";
 
-const Page = () => {
+
+export default function Home() {
     return (
-        <div>
+        <div className="min-h-screen">
             <Navbar />
-            <ConsumptionHint />
-            <div className="flex flex-col md:flex-row justify-center items-start gap-6 px-4 max-w-5xl mx-auto mt-10">
-                <DeviceList />
-                <RoomList />
-            </div>
+            <main className="p-4 md:p-8">
+                <div className="max-w-5xl mx-auto">
+                    <ConsumptionHint />
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                        <DeviceList />
+                        <RoomList />
+                    </div>
+                </div>
+            </main>
+            <Footer />
         </div>
-    );
-};
-
-export default Page;
+    )
+}

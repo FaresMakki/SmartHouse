@@ -30,7 +30,7 @@ export default function RootLayout({
         >
             {/* Pinned Gradient Circle */}
             <div
-                className="absolute top-[-2%] md:top-[-8%] lg:top-[-10%] left-1/2 -translate-x-1/2 h-[200px] w-[300px] sm:h-[300px] sm:w-[400px] md:h-[500px] md:w-[700px] lg:h-[600px] lg:w-[900px] bg-[#FF8343] opacity-40 md:opacity-50 rounded-full blur-[60px] sm:blur-[80px] md:blur-[100px] lg:blur-[120px] transition-all duration-300"
+                className="absolute top-[-2%] md:top-[-8%] lg:top-[-10%] left-1/2 -translate-x-1/2 h-[200px] w-[300px] sm:h-[300px] sm:w-[400px] md:h-[500px] md:w-[700px] lg:h-[600px] lg:w-[900px] bg-[#FF8343] opacity-40 md:opacity-30 rounded-full blur-[60px] sm:blur-[80px] md:blur-[100px] lg:blur-[120px] transition-all duration-300"
             ></div>
         </div>
 

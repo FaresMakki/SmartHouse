@@ -16,17 +16,17 @@ const monthlyData = [
     { name: 'Week 4', consumption: 120 },
 ];
 
-export default function ConsumptionHint() {
+export default function ConsumptionHint () {
     const consumptionDifference = currentMonthConsumption - lastMonthConsumption;
     const isIncreased = consumptionDifference > 0;
 
     return (
-        <Card className="max-w-4xl rounded-3xl mx-auto bg-white border border-gray-200 mt-10">
+        <Card className="rounded-3xl bg-white bg-opacity-80 border-0  shadow-md">
             <CardContent className="p-8">
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-3xl font-bold flex items-center text-black">
-                        <Zap className="w-10 h-10 mr-3 text-orange-500" />
-                        Energy Dashboard
+                        {/*<Zap className="w-10 h-10 mr-3 text-accentOrange" />*/}
+                        This Month's Activity
                     </h2>
                     <TooltipProvider>
                         <UITooltip>
@@ -48,7 +48,7 @@ export default function ConsumptionHint() {
                         <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
                             <h3 className="text-xl font-semibold mb-4 text-black">This Month's Usage</h3>
                             <div className="flex items-baseline justify-between">
-                                <span className="text-5xl font-bold text-orange-500">{currentMonthConsumption}</span>
+                                <span className="text-5xl font-bold">{currentMonthConsumption}</span>
                                 <span className="text-2xl font-medium text-gray-600">kWh</span>
                             </div>
                             <div className={`flex items-center mt-4 ${isIncreased ? 'text-red-500' : 'text-green-500'}`}>
@@ -58,8 +58,8 @@ export default function ConsumptionHint() {
                                     <ArrowDown className="w-5 h-5 mr-1" />
                                 )}
                                 <span className="text-sm font-medium">
-                  {Math.abs(consumptionDifference)} kWh {isIncreased ? 'increase' : 'decrease'}
-                </span>
+                                    {Math.abs(consumptionDifference)} kWh {isIncreased ? 'increase' : 'decrease'}
+                                </span>
                             </div>
                         </div>
 
@@ -76,7 +76,7 @@ export default function ConsumptionHint() {
                     <div className="md:col-span-2">
                         <div className="bg-white p-6 rounded-lg border border-gray-200 h-full">
                             <h3 className="text-xl font-semibold mb-6 text-black">Consumption Trend</h3>
-                            <div className="h-[300px]">
+                            <div className="h-[300px] md:pt-10">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <LineChart data={monthlyData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                                         <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />

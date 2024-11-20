@@ -13,47 +13,45 @@ const devices = [
 
 export default function DeviceList() {
     return (
-        <div className="flex-1">
-            <Card className="w-full bg-white rounded-2xl shadow-md overflow-hidden">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-xl sm:text-2xl font-bold">Connected Devices</CardTitle>
-                    <Button variant="outline" size="icon" className="rounded-full">
-                        <PlusCircle className="h-4 w-4" />
-                        <span className="sr-only">Add device</span>
-                    </Button>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-4">
-                        {devices.map((device, index) => (
-                            <div
-                                key={index}
-                                className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 rounded-xl bg-gray-50 p-4"
-                            >
-                                <div className="flex-shrink-0">
-                                    <device.icon className="h-6 w-6 text-orange-500" />
-                                </div>
-                                <div className="flex-grow">
-                                    <h3 className="text-base sm:text-lg font-semibold text-gray-900">{device.name}</h3>
-                                    <div className="flex flex-col sm:flex-row sm:space-x-4 text-sm text-gray-500">
+        <Card className="w-full bg-white rounded-2xl shadow-md overflow-hidden border-0 bg-opacity-80">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-xl font-bold">Connected Devices</CardTitle>
+                <Button variant="outline" size="icon" className="rounded-full">
+                    <PlusCircle className="h-4 w-4" />
+                    <span className="sr-only">Add device</span>
+                </Button>
+            </CardHeader>
+            <CardContent>
+                <div className="space-y-4">
+                    {devices.map((device, index) => (
+                        <div
+                            key={index}
+                            className="flex items-center justify-between space-x-4 rounded-xl bg-gray-50 p-4"
+                        >
+                            <div className="flex items-center space-x-4">
+                                <device.icon className="h-6 w-6" />
+                                <div>
+                                    <h3 className="text-sm font-semibold text-gray-900">{device.name}</h3>
+                                    <div className="flex space-x-2 text-xs text-gray-500">
                                         <div className="flex items-center">
-                                            <Power className="mr-1 h-4 w-4" />
+                                            <Power className="mr-1 h-3 w-3" />
                                             {device.status}
                                         </div>
                                         <div className="flex items-center">
-                                            <Wifi className="mr-1 h-4 w-4" />
+                                            <Wifi className="mr-1 h-3 w-3" />
                                             Connected
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex-shrink-0 text-left sm:text-right">
-                                    <div className="text-base sm:text-lg font-semibold text-gray-900">{device.consumption}</div>
-                                    <div className="text-sm text-gray-500">Consumption</div>
-                                </div>
                             </div>
-                        ))}
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
+                            <div className="text-right">
+                                <div className="text-sm font-semibold text-gray-900">{device.consumption}</div>
+                                <div className="text-xs text-gray-500">Consumption</div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </CardContent>
+        </Card>
     );
 }

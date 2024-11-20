@@ -6,6 +6,7 @@ import ConsumptionHint from "@/components/consumption-hint";
 import {Footer} from "@/components/generalFooter";
 import RoomList from "@/components/rooms-summary";
 import DeviceList from "@/components/devices-summary-homepage";
+import LowBatteryNotification from "@/components/low-battery-notification";
 
 
 export default function Home() {
@@ -21,7 +22,9 @@ export default function Home() {
                     </div>
                 </div>
             </main>
+            <LowBatteryNotification />
+
             <Footer />
         </div>
-    )
+    );
 }

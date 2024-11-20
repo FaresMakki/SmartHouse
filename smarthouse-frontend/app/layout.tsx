@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import * as React from "react";
 import { Quicksand } from 'next/font/google';
+import {Toaster} from "@/components/ui/toaster";
 
 const quicksand = Quicksand({
     weight: ['400', '700'],
@@ -35,6 +36,8 @@ export default function RootLayout({
         </div>
 
         <main className="relative z-10">{children}</main>
+        <Toaster />
+
         </body>
         </html>
     );

@@ -55,7 +55,7 @@ export default function Navbar() {
                 {name: "Rooms", href: "/rooms", icon: DoorOpen},
                 {name: "Devices", href: "/devices", icon: Lightbulb},
             ].map((item) => (
-                <NavLink href={item.href} key={item.name}>
+                <Link href={item.href} key={item.name}>
                     <Button
                         variant="ghost"
                         className={`rounded-full text-black bg-white
@@ -65,7 +65,7 @@ export default function Navbar() {
                         <item.icon className="h-5 w-5 mr-2"/>
                         <span className="capitalize">{item.name}</span>
                     </Button>
-                </NavLink>
+                </Link>
             ))}
         </div>
     );
@@ -80,7 +80,7 @@ export default function Navbar() {
                 className="text-black sticky top-0 z-50 m-2 bg-white rounded-full shadow-lg w-full max-w-5xl px-2"
             >
                 <div className="flex items-center justify-between p-4 max-w-7xl mx-auto">
-                    <Link href="/" className="text-xl font-semibold flex items-center ms-1">
+                    <Link href="/home" className="text-xl font-semibold flex items-center ms-1">
                         <Home className="my-2 mr-2"/>
                         Homely
                     </Link>

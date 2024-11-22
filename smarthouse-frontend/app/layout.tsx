@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import * as React from "react";
 import { Quicksand } from 'next/font/google';
-import {Toaster} from "@/components/ui/toaster";
+import {Toaster} from "@/components/ui/sonner";
 
 const quicksand = Quicksand({
     weight: ['400', '700'],

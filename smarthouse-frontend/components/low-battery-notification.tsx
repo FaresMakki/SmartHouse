@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useToast } from "@/hooks/use-toast";
-import { BatteryCharging, BatteryLow } from "lucide-react";
+import { toast } from "sonner";
+import { BatteryLow } from 'lucide-react';
 
 const devices = [
     { name: "Living Room Light", battery: 15 },
@@ -13,17 +13,14 @@ const devices = [
 ];
 
 export default function LowBatteryNotification() {
-    const { toast } = useToast();
-
     useEffect(() => {
         const lowBatteryDevices = devices
             .filter((device) => device.battery <= 20)
-            .slice(0, 3); // Get up to 3 devices with low battery
-        console.log(lowBatteryDevices)
-        lowBatteryDevices.forEach((device) => {
+            .slice(0, 3);
+
+        lowBatteryDevices.forEach((device, index) => {
             const inVokeToast = setTimeout(() => {
-                toast({
-                    title: "Low Battery Alert",
+                toast("Low Battery Alert", {
                     description: (
                         <div className="flex items-center space-x-3">
                             <BatteryLow className="h-6 w-6 text-red-500" />
@@ -35,7 +32,7 @@ export default function LowBatteryNotification() {
                     ),
                     duration: 30000,
                 });
-            })
+            });
             return () => clearTimeout(inVokeToast)
         });
     }, []);

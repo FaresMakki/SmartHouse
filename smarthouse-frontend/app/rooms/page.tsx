@@ -150,9 +150,34 @@ export default function RoomsManagement() {
 
     const toggleDeviceStatusInOverlay = (deviceIndex: number) => {
         if (selectedRoom) {
-            const roomIndex = rooms.findIndex(room => room.name === selectedRoom.name);
-            toggleDeviceStatus(roomIndex, deviceIndex);
-            setSelectedRoom(rooms[roomIndex]);
+            setRooms((prevRooms) =>
+                prevRooms.map((room) => {
+                    if (room.name === selectedRoom.name) {
+                        // Update the specific room's devices
+                        const updatedDevices = room.devices.map((device, dIndex) =>
+                            dIndex === deviceIndex
+                                ? { ...device, status: !device.status }
+                                : device
+                        );
+                        return { ...room, devices: updatedDevices };
+                    }
+                    return room;
+                })
+            );
+
+            // Update selectedRoom after updating the rooms
+            setSelectedRoom((prevSelectedRoom) =>
+                prevSelectedRoom
+                    ? {
+                        ...prevSelectedRoom,
+                        devices: prevSelectedRoom.devices.map((device, dIndex) =>
+                            dIndex === deviceIndex
+                                ? { ...device, status: !device.status }
+                                : device
+                        ),
+                    }
+                    : null
+            );
         }
     };
 

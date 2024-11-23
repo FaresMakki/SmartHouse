@@ -27,21 +27,12 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { motion } from "framer-motion";
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import RoomOverlay from "@/components/room-overlay";
 
 interface Device {
-    id: string;
     name: string;
     icon: React.ElementType;
     status: boolean;
-    size?: string;
     model?: string;
     dateAdded?: string;
     lastTurnedOn?: string;
@@ -64,36 +55,40 @@ const initialRooms: Room[] = [
         name: "Living Room",
         icon: Tv,
         devices: [
-            { id: "tv-LR", name: "TV", icon: Tv, status: true, consumption: 15 },
-            { id: "main-light-LR", name: "Main Light", icon: Lightbulb, status: true, consumption: 10 },
-            { id: "fan-LR", name: "Fan", icon: Fan, status: false, consumption: 5 },
-            { id: "smart-speaker-LR", name: "Smart Speaker", icon: Tv, status: true, consumption: 7 },
+            { name: "TV", icon: Tv, status: true, model: "Samsung QLED", dateAdded: "2023-01-15", lastTurnedOn: "2023-05-30 14:30", consumption: 45 },
+            { name: "Main Light", icon: Lightbulb, status: true, model: "Philips Hue", dateAdded: "2023-02-01", lastTurnedOn: "2023-05-30 19:00", consumption: 10 },
+            { name: "Secondary Light", icon: Lightbulb, status: true, model: "Philips Hue", dateAdded: "2023-02-01", lastTurnedOn: "2023-05-30 19:00", consumption: 10 },
+            { name: "Small Light", icon: Lightbulb, status: true, model: "Philips Hue", dateAdded: "2023-02-01", lastTurnedOn: "2023-05-30 19:00", consumption: 10 },
+            { name: "Small Light", icon: Lightbulb, status: true, model: "Philips Hue", dateAdded: "2023-02-01", lastTurnedOn: "2023-05-30 19:00", consumption: 10 },
+            { name: "Small Light", icon: Lightbulb, status: true, model: "Philips Hue", dateAdded: "2023-02-01", lastTurnedOn: "2023-05-30 19:00", consumption: 10 },
+            { name: "Fan", icon: Fan, status: false, model: "Dyson Cool", dateAdded: "2023-03-10", lastTurnedOn: "2023-05-29 12:00", consumption: 30 },
+            { name: "Smart Speaker", icon: Tv, status: true, model: "Amazon Echo", dateAdded: "2023-04-05", lastTurnedOn: "2023-05-30 08:00", consumption: 5 },
         ],
     },
     {
         name: "Bedroom",
         icon: Bed,
         devices: [
-            { id: "lamp-BR", name: "Bedside Lamp", icon: Lightbulb, status: true, model: "LIFX Color", dateAdded: "2023-01-20", lastTurnedOn: "2023-05-30 22:00", consumption: 8 },
-            { id: "ceiling-fan-BR", name: "Ceiling Fan", icon: Fan, status: true, model: "Honeywell QuietSet", dateAdded: "2023-02-15", lastTurnedOn: "2023-05-30 21:30", consumption: 25 },
-            { id: "tv-BR", name: "Smart TV", icon: Tv, status: false, model: "LG OLED", dateAdded: "2023-03-05", lastTurnedOn: "2023-05-29 23:00", consumption: 35 },
+            { name: "Bedside Lamp", icon: Lightbulb, status: true, model: "LIFX Color", dateAdded: "2023-01-20", lastTurnedOn: "2023-05-30 22:00", consumption: 8 },
+            { name: "Ceiling Fan", icon: Fan, status: true, model: "Honeywell QuietSet", dateAdded: "2023-02-15", lastTurnedOn: "2023-05-30 21:30", consumption: 25 },
+            { name: "Smart TV", icon: Tv, status: false, model: "LG OLED", dateAdded: "2023-03-05", lastTurnedOn: "2023-05-29 23:00", consumption: 35 },
         ],
     },
     {
         name: "Kitchen",
         icon: CookingPot,
         devices: [
-            { id: "refrigerator-KT", name: "Refrigerator", icon: Thermometer, status: true, model: "Samsung Smart Fridge", dateAdded: "2023-01-10", lastTurnedOn: "2023-05-30 00:00", consumption: 40 },
-            { id: "microwave-KT", name: "Microwave", icon: CookingPot, status: false, model: "Panasonic Inverter", dateAdded: "2023-02-20", lastTurnedOn: "2023-05-30 12:30", consumption: 15 },
-            { id: "coffee-maker-KT", name: "Coffee Maker", icon: CookingPot, status: true, model: "Breville Precision", dateAdded: "2023-03-15", lastTurnedOn: "2023-05-30 07:00", consumption: 10 },
+            { name: "Refrigerator", icon: Thermometer, status: true, model: "Samsung Smart Fridge", dateAdded: "2023-01-10", lastTurnedOn: "2023-05-30 00:00", consumption: 40 },
+            { name: "Microwave", icon: CookingPot, status: false, model: "Panasonic Inverter", dateAdded: "2023-02-20", lastTurnedOn: "2023-05-30 12:30", consumption: 15 },
+            { name: "Coffee Maker", icon: CookingPot, status: true, model: "Breville Precision", dateAdded: "2023-03-15", lastTurnedOn: "2023-05-30 07:00", consumption: 10 },
         ],
     },
     {
         name: "Bathroom",
         icon: Bath,
         devices: [
-            { id: "smart-mirror-BT", name: "Smart Mirror", icon: Lightbulb, status: true, model: "Simplehuman Sensor Mirror", dateAdded: "2023-01-25", lastTurnedOn: "2023-05-30 07:30", consumption: 5 },
-            { id: "exhaust-fan-BT", name: "Exhaust Fan", icon: Fan, status: false, model: "Panasonic WhisperCeiling", dateAdded: "2023-02-28", lastTurnedOn: "2023-05-30 07:35", consumption: 12 },
+            { name: "Smart Mirror", icon: Lightbulb, status: true, model: "Simplehuman Sensor Mirror", dateAdded: "2023-01-25", lastTurnedOn: "2023-05-30 07:30", consumption: 5 },
+            { name: "Exhaust Fan", icon: Fan, status: false, model: "Panasonic WhisperCeiling", dateAdded: "2023-02-28", lastTurnedOn: "2023-05-30 07:35", consumption: 12 },
         ],
     },
 ];
@@ -106,8 +101,8 @@ const DeviceGrid: React.FC<DeviceGridProps> = ({ devices, toggleDeviceStatus }) 
                 <div
                     key={deviceIndex}
                     className={`p-2 rounded-md flex flex-col items-center justify-center cursor-pointer ${
-                        device.size === "large" ? "col-span-2" : ""
-                    } ${device.status ? "bg-green-200" : "bg-red-200"}`}
+                        device.status ? "bg-green-200" : "bg-red-200"
+                    }`}
                     onClick={() => toggleDeviceStatus(deviceIndex)}
                 >
                     <IconComponent
@@ -128,112 +123,6 @@ const DeviceGrid: React.FC<DeviceGridProps> = ({ devices, toggleDeviceStatus }) 
     </div>
 );
 
-const consumptionData = [
-    { date: '2023-05-01', consumption: 150 },
-    { date: '2023-05-08', consumption: 180 },
-    { date: '2023-05-15', consumption: 160 },
-    { date: '2023-05-22', consumption: 200 },
-    { date: '2023-05-29', consumption: 190 },
-];
-
-interface RoomOverlayProps {
-    room: Room;
-    isOpen: boolean;
-    onClose: () => void;
-    toggleDeviceStatus: (deviceIndex: number) => void;
-}
-
-const RoomOverlay: React.FC<RoomOverlayProps> = ({ room, isOpen, onClose, toggleDeviceStatus }) => {
-    const totalConsumption = room.devices.reduce((sum, device) => sum + (device.consumption || 0), 0);
-
-    return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-[900px] max-h-[90vh] flex flex-col">
-                <DialogHeader>
-                    <DialogTitle>{room.name} Overview</DialogTitle>
-                </DialogHeader>
-                <div className="flex-grow flex flex-col md:flex-row gap-4 mt-4 overflow-hidden">
-                    <div className="w-full md:w-1/2 overflow-hidden">
-                        <ScrollArea className="h-[400px] pr-4">
-                            <h3 className="text-lg font-semibold mb-2">Devices</h3>
-                            {room.devices.map((device, index) => {
-                                const IconComponent = device.icon;
-                                return (
-                                    <div
-                                        key={index}
-                                        className={`flex items-center justify-between space-x-4 rounded-xl p-4 mb-2 cursor-pointer transition-colors duration-200 ${device.status ? "bg-green-100" : "bg-red-100"}`}
-                                        onClick={() => toggleDeviceStatus(index)}
-                                    >
-                                        <div className="flex items-center space-x-4">
-                                            <IconComponent className="h-6 w-6" />
-                                            <div>
-                                                <h3 className="text-sm font-semibold text-gray-900">{device.name}</h3>
-                                                <div className="flex space-x-2 text-xs text-gray-500">
-                                                    <div className="flex items-center">
-                                                        <Power className="mr-1 h-3 w-3" />
-                                                        {device.status ? 'On' : 'Off'}
-                                                    </div>
-                                                    <div className="flex items-center">
-                                                        <Wifi className="mr-1 h-3 w-3" />
-                                                        Connected
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="text-right">
-                                            <div className="text-sm font-semibold text-gray-900">{device.consumption} kWh</div>
-                                            <div className="text-xs text-gray-500">Consumption</div>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </ScrollArea>
-                    </div>
-                    <div className="w-full md:w-1/2">
-                        <h3 className="text-lg font-semibold mb-2">Monthly Consumption</h3>
-                        <div className="h-[300px]">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <LineChart data={consumptionData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                                    <XAxis
-                                        dataKey="date"
-                                        stroke="#888888"
-                                        fontSize={12}
-                                        tickLine={false}
-                                        axisLine={false}
-                                    />
-                                    <YAxis
-                                        stroke="#888888"
-                                        fontSize={12}
-                                        tickLine={false}
-                                        axisLine={false}
-                                        tickFormatter={(value) => `${value} kWh`}
-                                    />
-                                    <Tooltip
-                                        contentStyle={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '4px' }}
-                                        labelStyle={{ color: '#1a202c', fontWeight: 'bold' }}
-                                    />
-                                    <Line
-                                        type="monotone"
-                                        dataKey="consumption"
-                                        stroke="#F97316"
-                                        strokeWidth={2}
-                                        dot={{ fill: '#F97316', strokeWidth: 2, r: 4 }}
-                                        activeDot={{ r: 6, fill: '#F97316', stroke: 'white', strokeWidth: 2 }}
-                                    />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        </div>
-                        <div className="mt-4 text-center">
-                            <p className="text-lg font-semibold">Total Consumption <span className={"font-black"}>Today</span></p>
-                            <p className="text-2xl font-bold text-orange-500">{totalConsumption} kWh</p>
-                        </div>
-                    </div>
-                </div>
-            </DialogContent>
-        </Dialog>
-    );
-};
 
 export default function RoomsManagement() {
     const [rooms, setRooms] = useState<Room[]>(initialRooms);
@@ -276,7 +165,6 @@ export default function RoomsManagement() {
                 { name: "New Device 2", icon: Fan, status: true },
             ],
         };
-        // @ts-ignore
         setRooms([...rooms, newRoom]);
     };
 

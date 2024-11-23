@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { motion } from "framer-motion";
 import RoomOverlay from "@/components/room-overlay";
+import DeviceGrid from "@/components/device-grid";
 
 interface Device {
     name: string;
@@ -92,36 +93,6 @@ const initialRooms: Room[] = [
         ],
     },
 ];
-
-const DeviceGrid: React.FC<DeviceGridProps> = ({ devices, toggleDeviceStatus }) => (
-    <div className="grid grid-cols-3 gap-2 mt-4">
-        {devices.map((device, deviceIndex) => {
-            const IconComponent = device.icon;
-            return (
-                <div
-                    key={deviceIndex}
-                    className={`p-2 rounded-md flex flex-col items-center justify-center cursor-pointer ${
-                        device.status ? "bg-green-200" : "bg-red-200"
-                    }`}
-                    onClick={() => toggleDeviceStatus(deviceIndex)}
-                >
-                    <IconComponent
-                        className={`h-6 w-6 mb-1 ${
-                            device.status ? "text-green-900" : "text-red-900"
-                        }`}
-                    />
-                    <p
-                        className={`text-xs font-medium text-center ${
-                            device.status ? "text-green-900" : "text-red-900"
-                        }`}
-                    >
-                        {device.name}
-                    </p>
-                </div>
-            );
-        })}
-    </div>
-);
 
 
 export default function RoomsManagement() {
@@ -212,15 +183,26 @@ export default function RoomsManagement() {
         <div className="min-h-screen">
             <Navbar />
             <main className="py-20 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
-                <div className="flex justify-between items-center mb-12">
+                <motion.div className="flex justify-between items-center mb-12"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{
+                                duration: 0.5,
+                                delay: 0.1,
+                            }}
+                >
                     <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
                         Your Rooms
                     </h1>
-                    <Button className="rounded-full bg-orange-600 hover:bg-orange-600/80" onClick={addRoom}>
-                        <PlusCircle className="h-5 w-5 mr-2" />
-                        Add Room
+                    <Button
+                        variant="outline"
+                        className="group border-2 rounded-full border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white transition-all duration-300 ease-in-out"
+                        onClick={addRoom}
+                    >
+                        <PlusCircle className="h-5 w-5 mr-2 group-hover:animate-spin-slow" />
+                        <span className="font-semibold">Add New Room</span>
                     </Button>
-                </div>
+                </motion.div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {columns.map((column, columnIndex) => (
                         <div key={columnIndex} className="flex flex-col space-y-6">
@@ -280,6 +262,7 @@ export default function RoomsManagement() {
                                                             deviceIndex
                                                         )
                                                     }
+                                                    openRoomOverlay={() => openRoomOverlay(room)}
                                                 />
                                             </CardContent>
                                         </Card>

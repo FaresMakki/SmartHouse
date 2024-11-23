@@ -72,11 +72,12 @@ const RoomOverlay: React.FC<RoomOverlayProps> = ({ room, isOpen, onClose, toggle
                                         return (
                                             <div
                                                 key={index}
-                                                className={`flex items-center justify-between space-x-4 rounded-xl p-4 mb-2 cursor-pointer transition-colors duration-200 ${device.status ? "bg-green-100" : "bg-red-100"}`}
+                                                className={`flex items-center justify-between space-x-4 rounded-xl p-4 mb-2 cursor-pointer transition-colors duration-200 ${device.status ? "bg-emerald-200" : "bg-slate-200"}`}
                                                 onClick={() => toggleDeviceStatus(index)}
                                             >
                                                 <div className="flex items-center space-x-4">
-                                                    <IconComponent className="h-6 w-6" />
+                                                    <IconComponent className={`h-6 w-6 ${
+                                                        device.status ? "text-emerald-700" : "text-slate-700"}`} />
                                                     <div>
                                                         <h3 className="text-sm font-semibold text-gray-900">{device.name}</h3>
                                                         <div className="flex space-x-2 text-xs text-gray-500">
@@ -92,7 +93,7 @@ const RoomOverlay: React.FC<RoomOverlayProps> = ({ room, isOpen, onClose, toggle
                                                     </div>
                                                 </div>
                                                 <div className="text-right">
-                                                    <div className="text-sm font-semibold text-gray-900">{device.consumption} kWh</div>
+                                                    <div className="text-sm font-semibold text-gray-900">{device.consumption} Wh</div>
                                                     <div className="text-xs text-gray-500">Consumption</div>
                                                 </div>
                                             </div>
@@ -121,7 +122,7 @@ const RoomOverlay: React.FC<RoomOverlayProps> = ({ room, isOpen, onClose, toggle
                                                 fontSize={12}
                                                 tickLine={false}
                                                 axisLine={false}
-                                                tickFormatter={(value) => `${value} kWh`}
+                                                tickFormatter={(value) => `${value} Wh`}
                                             />
                                             <Tooltip
                                                 contentStyle={{
@@ -148,8 +149,8 @@ const RoomOverlay: React.FC<RoomOverlayProps> = ({ room, isOpen, onClose, toggle
                                     </ResponsiveContainer>
                                 </div>
                                 <div className="mt-4 text-center">
-                                    <p className="text-lg font-semibold">Total Consumption</p>
-                                    <p className="text-2xl font-bold text-orange-500">{totalConsumption} kWh</p>
+                                    <p className="text-lg font-semibold">Total Consumption <span className={"font-black"}>Today</span></p>
+                                    <p className="text-2xl font-bold text-orange-500">{totalConsumption} Wh</p>
                                 </div>
                             </TabsContent>
                         </Tabs>
@@ -165,11 +166,12 @@ const RoomOverlay: React.FC<RoomOverlayProps> = ({ room, isOpen, onClose, toggle
                                     return (
                                         <div
                                             key={index}
-                                            className={`flex items-center justify-between space-x-4 rounded-xl p-4 mb-2 cursor-pointer transition-colors duration-200 ${device.status ? "bg-green-100" : "bg-red-100"}`}
+                                            className={`flex items-center justify-between space-x-4 rounded-xl p-4 mb-2 cursor-pointer transition-colors duration-200 ${device.status ? "bg-emerald-200" : "bg-slate-200"}`}
                                             onClick={() => toggleDeviceStatus(index)}
                                         >
                                             <div className="flex items-center space-x-4">
-                                                <IconComponent className="h-6 w-6"/>
+                                                <IconComponent className={`h-6 w-6 ${
+                                            device.status ? "text-emerald-700" : "text-slate-700"}`} />
                                                 <div>
                                                     <h3 className="text-sm font-semibold text-gray-900">{device.name}</h3>
                                                     <div className="flex space-x-2 text-xs text-gray-500">
@@ -186,7 +188,7 @@ const RoomOverlay: React.FC<RoomOverlayProps> = ({ room, isOpen, onClose, toggle
                                             </div>
                                             <div className="text-right">
                                                 <div
-                                                    className="text-sm font-semibold text-gray-900">{device.consumption} kWh
+                                                    className="text-sm font-semibold text-gray-900">{device.consumption} Wh
                                                 </div>
                                                 <div className="text-xs text-gray-500">Consumption</div>
                                             </div>
@@ -213,7 +215,7 @@ const RoomOverlay: React.FC<RoomOverlayProps> = ({ room, isOpen, onClose, toggle
                                             fontSize={12}
                                             tickLine={false}
                                             axisLine={false}
-                                            tickFormatter={(value) => `${value} kWh`}
+                                            tickFormatter={(value) => `${value} Wh`}
                                         />
                                         <Tooltip
                                             contentStyle={{
@@ -236,7 +238,7 @@ const RoomOverlay: React.FC<RoomOverlayProps> = ({ room, isOpen, onClose, toggle
                             </div>
                             <div className="mt-4 text-center">
                                 <p className="text-lg font-semibold">Total Consumption <span className={"font-black"}>Today</span></p>
-                                <p className="text-2xl font-bold text-orange-500">{totalConsumption} kWh</p>
+                                <p className="text-2xl font-bold text-orange-500">{totalConsumption} Wh</p>
                             </div>
                         </div>
                     </div>

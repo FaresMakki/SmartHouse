@@ -68,7 +68,7 @@ export default function AddRoom() {
     const form = useForm<RoomFormValues>({
         resolver: zodResolver(roomSchema),
         defaultValues: {
-            name: 'Living Room',
+            name: '',
             icon: 'sofa',
             nature: 'Living Room',
             devices: [],
@@ -216,9 +216,9 @@ export default function AddRoom() {
                     <div className="flex justify-end">
                         <Button
                             type="submit"
-                            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300"
+                            className="bg-orange-500 rounded-full hover:bg-orange-600 text-white font-semibold py-2 px-4 transition-colors duration-300"
                         >
-                            Save Room
+                            Add Room
                         </Button>
                     </div>
                 </form>

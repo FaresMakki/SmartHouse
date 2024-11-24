@@ -46,10 +46,6 @@ interface Room {
     devices: Device[];
 }
 
-interface DeviceGridProps {
-    devices: Device[];
-    toggleDeviceStatus: (deviceIndex: number) => void;
-}
 
 const initialRooms: Room[] = [
     {

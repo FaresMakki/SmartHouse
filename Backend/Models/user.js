@@ -52,6 +52,11 @@ const Rooms=new mongoose.Schema({
         type:String,
         required:true
     },
+    nature: {
+        type: String,
+        enum: ["Living Room", "Bedroom", "Kitchen", "Bathroom", "Balcony", "Garage", "Garden", "Office", "Basement", "Attic", "Dining Room", "Hallway", "Laundry Room", "Library", "Lobby", "Pantry", "Playroom", "Studio", "Terrace", "Veranda", "Walk-in Closet", "Workshop"],
+        default: "Living Room"
+    },
     devices:{
         type:[deviceSchema],
         required:true

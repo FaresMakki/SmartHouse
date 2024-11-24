@@ -92,7 +92,7 @@ const DeviceGrid: React.FC<DeviceGridProps> = ({ devices, toggleDeviceStatus, op
             </div>
             {hasMoreDevices && (
                 <div
-                    className="absolute -inset-x-0.5 -bottom-0.5 backdrop-blur-md opacity-80 bg-white/30 rounded-b-xl flex items-end justify-center pb-4 cursor-pointer"
+                    className="absolute bg-gradient-to-b h-1/4 from-transparent via-white to-white -inset-x-0.5 -bottom-0.5 rounded-b-xl flex items-end justify-center pb-4 cursor-pointer"
                     onClick={(e) => {
                         e.stopPropagation();
                         openRoomOverlay();

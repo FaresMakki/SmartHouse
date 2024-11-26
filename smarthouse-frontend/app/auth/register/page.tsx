@@ -23,6 +23,7 @@ import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {RegisterSchema} from "@/schemas";
+import {Footer} from "@/components/general-footer";
 
 interface Country {
     name: string;
@@ -65,13 +66,34 @@ export default function RegisterPage() {
         setSuccess("");
         startTransition(async () => {
             try {
-                console.log('Registration attempted with:', values);
-                setSuccess("Account created successfully!");
+                const response = await fetch("http://localhost:3001/user/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        FirstName: values.firstName,
+                        LastName: values.lastName,
+                        Region: values.country,
+                        PhoneNum: (values.phoneNumber).replace(/ /g,''),
+                        e_mail: values.email,
+                        Password: values.password,
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || "Something went wrong");
+                }
+
+                setSuccess(data.success || "Account created successfully!");
             } catch (error: any) {
                 setError(error.message || "Failed to create account. Please try again.");
             }
         });
     };
+
 
     const handleGoogleRegister = () => {
         console.log('Google registration attempted');
@@ -92,7 +114,7 @@ export default function RegisterPage() {
                     <Card className="p-8 shadow-lg border-none bg-white">
                         <div className="text-center mb-8">
                             <h1 className="text-3xl font-bold mb-2">Create Account</h1>
-                            <p className="text-gray-500">Register for your SmartHouse account</p>
+                            <p className="text-gray-500">Register for your Homely account</p>
                         </div>
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -107,7 +129,7 @@ export default function RegisterPage() {
                                                     <Input
                                                         {...field}
                                                         placeholder="John"
-                                                        className="bg-accentOrange/10 border-none"
+                                                        className="bg-gray-400/10 border-none"
                                                     />
                                                 </FormControl>
                                                 <FormMessage />
@@ -124,7 +146,7 @@ export default function RegisterPage() {
                                                     <Input
                                                         {...field}
                                                         placeholder="Doe"
-                                                        className="bg-accentOrange/10 border-none"
+                                                        className="bg-gray-400/10 border-none"
                                                     />
                                                 </FormControl>
                                                 <FormMessage />
@@ -143,7 +165,7 @@ export default function RegisterPage() {
                                                     {...field}
                                                     placeholder="johndoe@example.com"
                                                     type="email"
-                                                    className="bg-accentOrange/10 border-none"
+                                                    className="bg-gray-400/10 border-none"
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -158,7 +180,7 @@ export default function RegisterPage() {
                                             <FormLabel>Country</FormLabel>
                                             <Select onValueChange={handleCountryChange}>
                                                 <FormControl>
-                                                    <SelectTrigger className="bg-accentOrange/10 border-none">
+                                                    <SelectTrigger className="bg-gray-400/10 border-none">
                                                         <SelectValue placeholder="Select a country" />
                                                     </SelectTrigger>
                                                 </FormControl>
@@ -195,7 +217,7 @@ export default function RegisterPage() {
                                                             {...field}
                                                             placeholder={selectedCountry ? `${selectedCountry.dialling_code} ` : "+1234567890"}
                                                             type="tel"
-                                                            className="bg-accentOrange/10 border-none"
+                                                            className="bg-gray-400/10 border-none"
                                                             value={field.value}
                                                             onChange={(e) => {
                                                                 const diallingCode = selectedCountry?.dialling_code || '';
@@ -222,7 +244,7 @@ export default function RegisterPage() {
                                                     {...field}
                                                     placeholder="********"
                                                     type="password"
-                                                    className="bg-accentOrange/10 border-none"
+                                                    className="bg-gray-400/10 border-none"
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -240,7 +262,7 @@ export default function RegisterPage() {
                                                     {...field}
                                                     placeholder="********"
                                                     type="password"
-                                                    className="bg-accentOrange/10 border-none"
+                                                    className="bg-gray-400/10 border-none"
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -256,13 +278,13 @@ export default function RegisterPage() {
                                                 <Checkbox
                                                     checked={field.value}
                                                     onCheckedChange={field.onChange}
-                                                    className={"data-[]:"}
+                                                    className={"mt-[2px] ml-0.5"}
                                                 />
                                             </FormControl>
-                                            <div className="space-y-1 leading-none">
+                                            <div className="leading-none">
                                                 <FormLabel>
                                                     I agree to the{' '}
-                                                    <Link href="/terms" className="text-accentOrange hover:underline">
+                                                    <Link href="/terms" className="text-orange-500 font-semibold hover:underline">
                                                         terms of service
                                                     </Link>
                                                 </FormLabel>
@@ -274,7 +296,7 @@ export default function RegisterPage() {
                                 <FormSuccess message={success} />
                                 <Button
                                     type="submit"
-                                    className="w-full bg-accentOrange text-white hover:bg-accentOrange/90 transition duration-200"
+                                    className="w-full bg-orange-500 rounded-full text-white hover:bg-orange-400 transition duration-200"
                                     disabled={isPending}
                                 >
                                     {isPending ? "Creating Account..." : "Create Account"}
@@ -293,7 +315,7 @@ export default function RegisterPage() {
                             <Button
                                 type="button"
                                 variant="outline"
-                                className="w-full mt-4 text-black border-gray-300 hover:bg-gray-50"
+                                className="w-full rounded-full mt-4 text-black border-gray-300 hover:bg-gray-50"
                                 onClick={handleGoogleRegister}
                             >
                                 <svg className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" data-prefix="fab"
@@ -314,9 +336,7 @@ export default function RegisterPage() {
                     </Card>
                 </div>
             </main>
-            <footer className="border-t border-white/10 p-4 text-center text-sm text-white/80">
-                © 2024 SmartHouse. All rights reserved.
-            </footer>
+            <Footer/>
         </div>
     );
 }

@@ -59,10 +59,10 @@ export default function RoomsManagement() {
                     return response.json();
                 })
                 .then((data) => {
-                    console.log("Fetched data:", data);
-                    if (data.rooms) {
+                    console.log("Fetched data:", data.success);
+                    if (data.success) {
                         setRooms(
-                            data.rooms.map((room: any) => ({
+                            data.success.map((room: any) => ({
                                 name: room.name,
                                 icon: getRoomIcon(room.icon),
                                 devices: room.devices || [],

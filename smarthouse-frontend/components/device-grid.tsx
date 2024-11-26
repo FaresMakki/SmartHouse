@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Power, Zap, ChevronDown } from 'lucide-react';
+import { Power, Zap, ChevronDown, PlusCircle } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface Device {
@@ -22,6 +22,26 @@ interface DeviceGridProps {
 }
 
 const DeviceGrid: React.FC<DeviceGridProps> = ({ devices, toggleDeviceStatus, openRoomOverlay }) => {
+    if (devices.length === 0) {
+        return (
+            <motion.div
+                className="flex flex-col items-center justify-center h-40 bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl shadow-sm"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+            >
+                <p className="text-slate-600 text-lg mb-4">No devices in this room yet</p>
+                <motion.button
+                    className="px-4 py-2 bg-emerald-500 text-white rounded-full hover:bg-emerald-600 transition-colors duration-300 flex items-center"
+                    onClick={openRoomOverlay}
+                >
+                    <PlusCircle className="h-5 w-5 mr-2" />
+                    Add a device
+                </motion.button>
+            </motion.div>
+        );
+    }
+
     const visibleDevices = devices.slice(0, 6);
     const hasMoreDevices = devices.length > 6;
 
@@ -107,7 +127,6 @@ const DeviceGrid: React.FC<DeviceGridProps> = ({ devices, toggleDeviceStatus, op
                     </motion.div>
                 </div>
             )}
-
         </div>
     );
 };

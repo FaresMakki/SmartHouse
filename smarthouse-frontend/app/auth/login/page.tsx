@@ -1,9 +1,9 @@
 "use client";
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import * as z from "zod";
-import { LoginSchema } from "@/schemas";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import {LoginSchema} from "@/schemas";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
 import {
     Form,
     FormField,
@@ -12,15 +12,16 @@ import {
     FormItem,
     FormMessage,
 } from "@/components/ui/form";
-import { useTransition } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { FormError } from "@/components/form-error";
-import { FormSuccess } from "@/components/form-success";
+import {useTransition} from "react";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {FormError} from "@/components/form-error";
+import {FormSuccess} from "@/components/form-success";
 import Link from "next/link";
 import {Navbar} from "@/components/navbarBack";
 import {Card} from "@/components/ui/card";
-import { useRouter } from 'next/navigation';
+import {useRouter} from 'next/navigation';
+import {Footer} from "@/components/general-footer";
 
 
 const LoginForm = () => {
@@ -29,7 +30,7 @@ const LoginForm = () => {
     const [success, setSuccess] = useState<string | undefined>("");
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
-        defaultValues: { email: "", password: "" },
+        defaultValues: {email: "", password: ""},
     });
 
     const [isPending, startTransition] = useTransition();
@@ -42,7 +43,7 @@ const LoginForm = () => {
         startTransition(() => {
             fetch('http://localhost:3001/user/login', {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {"Content-Type": "application/json"},
                 credentials: "include",
                 body: JSON.stringify({
                     e_mail: data.email,
@@ -69,16 +70,16 @@ const LoginForm = () => {
 
     return (
         <div className="min-h-screen text-black flex flex-col">
-            <Navbar />
+            <Navbar/>
             <main className="flex-grow flex items-center justify-center p-4">
                 <div className="w-full max-w-md sm:max-w-lg lg:max-w-md">
                     <Card className="p-8 shadow-lg border-none bg-white">
                         <div className="text-center mb-8">
                             <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
-                            <p className="text-gray-500">Login to your SmartHouse account</p>
+                            <p className="text-gray-500">Login to your Homely account</p>
                         </div>
                         <Form {...form}>
-                            <form  onSubmit={form.handleSubmit(onLogin)} className="space-y-6">
+                            <form onSubmit={form.handleSubmit(onLogin)} className="space-y-6">
                                 <FormField
                                     control={form.control}
                                     name="email"
@@ -91,7 +92,7 @@ const LoginForm = () => {
                                                     placeholder="JohnDoe@example.com"
                                                     type="email"
                                                     disabled={isPending}
-                                                    className="bg-accentOrange/10 border-none"
+                                                    className="bg-gray-400/10 border-none"
                                                 />
                                             </FormControl>
                                             <FormMessage/>
@@ -110,7 +111,7 @@ const LoginForm = () => {
                                                     placeholder="*******"
                                                     type="password"
                                                     disabled={isPending}
-                                                    className="bg-accentOrange/10 border-none"
+                                                    className="bg-gray-400/10 border-none"
                                                 />
                                             </FormControl>
                                             <FormMessage/>
@@ -118,7 +119,8 @@ const LoginForm = () => {
                                     )}
                                 />
                                 <div className="flex justify-end">
-                                    <Link href="/auth/forgot-password" className="text-sm text-accentOrange hover:underline">
+                                    <Link href="/auth/forgot-password"
+                                          className="text-sm font-semibold text-accentOrange hover:underline">
                                         Forgot password?
                                     </Link>
                                 </div>
@@ -126,7 +128,7 @@ const LoginForm = () => {
                                 <FormSuccess message={success}/>
                                 <Button
                                     type="submit"
-                                    className="w-full bg-accentOrange text-white hover:bg-accentOrange/90 transition duration-200"
+                                    className="rounded-full w-full bg-orange-500 text-white hover:bg-accentOrange/90 transition duration-200"
                                     disabled={isPending}
                                 >
                                     {isPending ? "Logging in..." : "Log in"}
@@ -145,7 +147,7 @@ const LoginForm = () => {
                             <Button
                                 type="button"
                                 variant="outline"
-                                className="w-full mt-4 text-black border-gray-300 hover:bg-gray-50"
+                                className="rounded-full w-full mt-4 text-black border-gray-300 hover:bg-gray-50"
                                 onClick={handleGoogleLogin}
                             >
                                 <svg className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" data-prefix="fab"
@@ -166,9 +168,7 @@ const LoginForm = () => {
                     </Card>
                 </div>
             </main>
-            <footer className="border-t border-white/10 p-4 text-center text-sm text-white/80">
-                © 2024 SmartHouse. All rights reserved.
-            </footer>
+            <Footer/>
         </div>
     );
 };

@@ -18,9 +18,7 @@ const createUserschema= z.object({
      })
          .min(6, "PhoneNum should be at least 6 digits")
          .max(20, "PhoneNum should be at most 20 digits")
-         .regex(/^\d+$/, "PhoneNum should only contain digits"),
-
-
+         .regex(/^\+\d+$/, "PhoneNum should start with '+' and contain only digits"),
 
      e_mail:z.string().min(6,{message:"email must be more than 6 caractere"}).max(40,{message:"email must be less than 40 caractere"}).email(),
      Password:z.string().min(6,{message:"Password must be more than 6 caractere"}).max(40,{message:"Password must be less than 40 caractere"})

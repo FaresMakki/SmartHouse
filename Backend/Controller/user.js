@@ -104,7 +104,6 @@ exports.login=async (req,res)=> {
 exports.AccountActivation=async (req,res)=> {
     try{
 
-
         EmailValidation.findOne({ValidationCode:req.params.activationcode}).then(async (input) => {
                 if (!input) {
                     await usermodel.findOne({_id: req.params.id}).then(async (user) => {
@@ -153,7 +152,6 @@ exports.AccountActivation=async (req,res)=> {
 }
 exports.addroom=async (req,res)=> {
     try{
-        console.log("Hello1")
         const user=await usermodel.findOne({_id:req.user._id})
 
         if (!user){

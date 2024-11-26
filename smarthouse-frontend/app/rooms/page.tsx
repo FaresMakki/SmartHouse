@@ -1,25 +1,11 @@
 "use client";
 
-import React, {useState} from "react";
+import React, {useEffect, useState, useTransition} from "react";
 import {Card, CardContent} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
-import {
-    MoreHorizontal,
-    PlusCircle,
-    Pencil,
-    Trash2,
-    Tv,
-    Bed,
-    CookingPot,
-    Bath,
-    Lightbulb,
-    Fan,
-    Thermometer,
-    Power,
-    Wifi,
-} from "lucide-react";
+import * as Icons from "lucide-react";
 import Navbar from "@/components/navbarHome";
-import {Footer} from "@/components/generalFooter";
+import {Footer} from "@/components/general-footer";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -30,6 +16,7 @@ import {motion} from "framer-motion";
 import RoomOverlay from "@/components/room-overlay";
 import DeviceGrid from "@/components/device-grid";
 import Link from "next/link";
+import {MoreHorizontal, Pencil, PlusCircle, Trash2} from "lucide-react";
 
 interface Device {
     name: string;
@@ -47,183 +34,46 @@ interface Room {
     devices: Device[];
 }
 
-
-const initialRooms: Room[] = [
-    {
-        name: "Living Room",
-        icon: Tv,
-        devices: [
-            {
-                name: "TV",
-                icon: Tv,
-                status: true,
-                model: "Samsung QLED",
-                dateAdded: "2023-01-15",
-                lastTurnedOn: "2023-05-30 14:30",
-                consumption: 45
-            },
-            {
-                name: "Main Light",
-                icon: Lightbulb,
-                status: true,
-                model: "Philips Hue",
-                dateAdded: "2023-02-01",
-                lastTurnedOn: "2023-05-30 19:00",
-                consumption: 10
-            },
-            {
-                name: "Secondary Light",
-                icon: Lightbulb,
-                status: true,
-                model: "Philips Hue",
-                dateAdded: "2023-02-01",
-                lastTurnedOn: "2023-05-30 19:00",
-                consumption: 10
-            },
-            {
-                name: "Small Light",
-                icon: Lightbulb,
-                status: true,
-                model: "Philips Hue",
-                dateAdded: "2023-02-01",
-                lastTurnedOn: "2023-05-30 19:00",
-                consumption: 10
-            },
-            {
-                name: "Small Light",
-                icon: Lightbulb,
-                status: true,
-                model: "Philips Hue",
-                dateAdded: "2023-02-01",
-                lastTurnedOn: "2023-05-30 19:00",
-                consumption: 10
-            },
-            {
-                name: "Small Light",
-                icon: Lightbulb,
-                status: true,
-                model: "Philips Hue",
-                dateAdded: "2023-02-01",
-                lastTurnedOn: "2023-05-30 19:00",
-                consumption: 10
-            },
-            {
-                name: "Fan",
-                icon: Fan,
-                status: false,
-                model: "Dyson Cool",
-                dateAdded: "2023-03-10",
-                lastTurnedOn: "2023-05-29 12:00",
-                consumption: 30
-            },
-            {
-                name: "Smart Speaker",
-                icon: Tv,
-                status: true,
-                model: "Amazon Echo",
-                dateAdded: "2023-04-05",
-                lastTurnedOn: "2023-05-30 08:00",
-                consumption: 5
-            },
-        ],
-    },
-    {
-        name: "Bedroom",
-        icon: Bed,
-        devices: [
-            {
-                name: "Bedside Lamp",
-                icon: Lightbulb,
-                status: true,
-                model: "LIFX Color",
-                dateAdded: "2023-01-20",
-                lastTurnedOn: "2023-05-30 22:00",
-                consumption: 8
-            },
-            {
-                name: "Ceiling Fan",
-                icon: Fan,
-                status: true,
-                model: "Honeywell QuietSet",
-                dateAdded: "2023-02-15",
-                lastTurnedOn: "2023-05-30 21:30",
-                consumption: 25
-            },
-            {
-                name: "Smart TV",
-                icon: Tv,
-                status: false,
-                model: "LG OLED",
-                dateAdded: "2023-03-05",
-                lastTurnedOn: "2023-05-29 23:00",
-                consumption: 35
-            },
-        ],
-    },
-    {
-        name: "Kitchen",
-        icon: CookingPot,
-        devices: [
-            {
-                name: "Refrigerator",
-                icon: Thermometer,
-                status: true,
-                model: "Samsung Smart Fridge",
-                dateAdded: "2023-01-10",
-                lastTurnedOn: "2023-05-30 00:00",
-                consumption: 40
-            },
-            {
-                name: "Microwave",
-                icon: CookingPot,
-                status: false,
-                model: "Panasonic Inverter",
-                dateAdded: "2023-02-20",
-                lastTurnedOn: "2023-05-30 12:30",
-                consumption: 15
-            },
-            {
-                name: "Coffee Maker",
-                icon: CookingPot,
-                status: true,
-                model: "Breville Precision",
-                dateAdded: "2023-03-15",
-                lastTurnedOn: "2023-05-30 07:00",
-                consumption: 10
-            },
-        ],
-    },
-    {
-        name: "Bathroom",
-        icon: Bath,
-        devices: [
-            {
-                name: "Smart Mirror",
-                icon: Lightbulb,
-                status: true,
-                model: "Simplehuman Sensor Mirror",
-                dateAdded: "2023-01-25",
-                lastTurnedOn: "2023-05-30 07:30",
-                consumption: 5
-            },
-            {
-                name: "Exhaust Fan",
-                icon: Fan,
-                status: false,
-                model: "Panasonic WhisperCeiling",
-                dateAdded: "2023-02-28",
-                lastTurnedOn: "2023-05-30 07:35",
-                consumption: 12
-            },
-        ],
-    },
-];
-
-
 export default function RoomsManagement() {
-    const [rooms, setRooms] = useState<Room[]>(initialRooms);
+    const [rooms, setRooms] = useState<Room[]>([]);
+    const [isPending, startTransition] = useTransition();
     const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
     const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+
+    const getRoomIcon = (iconName: string): React.ElementType => {
+        // @ts-ignore
+        return Icons[iconName] || Icons.Home; // Default to "Home" if the iconName is not recognized
+    };
+
+
+    useEffect(() => {
+        startTransition(() => {
+            fetch("http://localhost:3001/user/getallroom", {
+                method: "GET",
+                credentials: "include",
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch rooms.");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log("Fetched data:", data);
+                    if (data.rooms) {
+                        setRooms(
+                            data.rooms.map((room: any) => ({
+                                name: room.name,
+                                icon: getRoomIcon(room.icon),
+                                devices: room.devices || [],
+                            }))
+                        );
+                    }
+                })
+                .catch((error) => console.error("Error Fetching Rooms:", error));
+        });
+    }, []);
+
 
     const toggleDeviceStatus = (roomIndex: number, deviceIndex: number) => {
         setRooms((prevRooms) =>
@@ -261,7 +111,6 @@ export default function RoomsManagement() {
                 })
             );
 
-            // Update selectedRoom after updating the rooms
             setSelectedRoom((prevSelectedRoom) =>
                 prevSelectedRoom
                     ? {
@@ -275,18 +124,6 @@ export default function RoomsManagement() {
                     : null
             );
         }
-    };
-
-    const addRoom = () => {
-        const newRoom = {
-            name: `Room ${rooms.length + 1}`,
-            icon: Tv,
-            devices: [
-                {name: "New Device 1", icon: Lightbulb, status: false},
-                {name: "New Device 2", icon: Fan, status: true},
-            ],
-        };
-        setRooms([...rooms, newRoom]);
     };
 
     const distributeRooms = (rooms: Room[], columnsCount: number) => {

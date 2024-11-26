@@ -1,9 +1,9 @@
 import * as React from "react"
-import {HeroSection} from "@/components/HeroSection";
-import {FeatureSection} from "@/components/Features";
-import {CustomerReviews} from "@/components/Reviews";
-import {Footer} from "@/components/Footer";
-import {Navbar} from "@/components/navbarLandingPage";
+import {HeroSection} from "@/components/hero-section";
+import {FeatureSection} from "@/components/features";
+import {CustomerReviews} from "@/components/reviews";
+import {Footer} from "@/components/footer";
+import {Navbar} from "@/components/navbar-landing-page";
 
 
 export default function LandingPage() {

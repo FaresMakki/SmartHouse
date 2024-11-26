@@ -1,20 +1,23 @@
 "use client"
 
-import React, { useState, useRef, useEffect } from 'react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Card, CardContent } from "@/components/ui/card"
+import React, {useState, useRef, useEffect, useTransition} from 'react'
+import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog"
+import {Button} from "@/components/ui/button"
+import {Input} from "@/components/ui/input"
+import {ScrollArea} from "@/components/ui/scroll-area"
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
+import {Card, CardContent} from "@/components/ui/card"
 import * as Icons from 'lucide-react'
-import { Navbar } from "@/components/navbarBack"
-import { Footer } from "@/components/generalFooter"
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import {Navbar} from "@/components/navbarBack"
+import {Footer} from "@/components/general-footer"
+import {z} from 'zod'
+import {zodResolver} from '@hookform/resolvers/zod'
+import {useForm} from 'react-hook-form'
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip"
+import {useRouter} from "next/navigation";
+import {FormError} from "@/components/form-error";
+import {FormSuccess} from "@/components/form-success";
 
 const roomSchema = z.object({
     name: z.string().min(1, "Room name is required").max(50, "Room name must be 50 characters or less"),
@@ -35,35 +38,35 @@ interface Device {
     consumption?: number
 }
 
-const roomNatures = [
-    "Living Room", "Bedroom", "Kitchen", "Bathroom", "Balcony", "Garage", "Garden", "Office",
-    "Basement", "Attic", "Dining Room", "Hallway", "Laundry Room", "Library", "Lobby", "Pantry",
-    "Playroom", "Studio", "Terrace", "Veranda", "Walk-in Closet", "Workshop"
-]
+const roomNatures = ["Living Room", "Bedroom", "Kitchen", "Bathroom", "Balcony", "Garage", "Garden", "Office", "Basement", "Attic", "Dining Room", "Hallway", "Laundry Room", "Library", "Lobby", "Pantry", "Playroom", "Studio", "Terrace", "Veranda", "Walk-in Closet", "Workshop"]
 
 const iconList = [
-    { id: 'home', icon: Icons.Home },
-    { id: 'bed', icon: Icons.Bed },
-    { id: 'sofa', icon: Icons.Sofa },
-    { id: 'tv', icon: Icons.Tv },
-    { id: 'kitchen', icon: Icons.Utensils },
-    { id: 'bathroom', icon: Icons.Bath },
-    { id: 'office', icon: Icons.Briefcase },
-    { id: 'garden', icon: Icons.Flower2 },
-    { id: 'garage', icon: Icons.Car },
-    { id: 'gym', icon: Icons.Dumbbell },
-    { id: 'laundry', icon: Icons.WashingMachine },
-    { id: 'playroom', icon: Icons.Gamepad2 },
-    { id: 'study', icon: Icons.BookOpen },
-    { id: 'workshop', icon: Icons.Wrench },
-    { id: 'balcony', icon: Icons.Wind },
-    { id: 'closet', icon: Icons.Shirt },
+    {id: 'home', icon: Icons.Home},
+    {id: 'bed', icon: Icons.Bed},
+    {id: 'sofa', icon: Icons.Sofa},
+    {id: 'tv', icon: Icons.Tv},
+    {id: 'kitchen', icon: Icons.Utensils},
+    {id: 'bathroom', icon: Icons.Bath},
+    {id: 'office', icon: Icons.Briefcase},
+    {id: 'garden', icon: Icons.Flower2},
+    {id: 'garage', icon: Icons.Car},
+    {id: 'gym', icon: Icons.Dumbbell},
+    {id: 'laundry', icon: Icons.WashingMachine},
+    {id: 'playroom', icon: Icons.Gamepad2},
+    {id: 'study', icon: Icons.BookOpen},
+    {id: 'workshop', icon: Icons.Wrench},
+    {id: 'balcony', icon: Icons.Wind},
+    {id: 'closet', icon: Icons.Shirt},
 ]
 
 export default function AddRoom() {
     const [isIconDialogOpen, setIsIconDialogOpen] = useState(false)
     const [isEditingName, setIsEditingName] = useState(false)
     const nameInputRef = useRef<HTMLInputElement>(null)
+    const [error, setError] = useState<string | undefined>("");
+    const [success, setSuccess] = useState<string | undefined>("");
+    const [isPending, startTransition] = useTransition();
+
 
     const form = useForm<RoomFormValues>({
         resolver: zodResolver(roomSchema),
@@ -91,21 +94,47 @@ export default function AddRoom() {
         console.log('Add device functionality to be implemented')
     }
 
+    const router = useRouter();
+
     const onSubmit = (data: RoomFormValues) => {
-        console.log('Save room:', data)
-    }
+        startTransition(() => {
+            console.log(data)
+            fetch('http://localhost:3001/user/room', {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                credentials: "include",
+                body: JSON.stringify({
+                    name: data.name,
+                    icon: data.icon,
+                    type: data.nature,
+                }),
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        setSuccess("Room added successfully!");
+                        router.push("/rooms");
+                    } else {
+                        setError(result.message || "Failed to add the room");
+                    }
+                })
+                .catch(error => setError("Network error, please try again later."));
+        });
+    };
+
 
     return (
         <div className="min-h-screen flex flex-col">
-            <Navbar href={"/rooms"} />
+            <Navbar href={"/rooms"}/>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="flex-grow mx-auto space-y-8 mt-10 max-w-2xl w-full px-4">
+                <form onSubmit={form.handleSubmit(onSubmit)}
+                      className="flex-grow mx-auto space-y-8 mt-10 max-w-2xl w-full px-4">
                     <div className="flex items-center justify-between space-x-4">
                         <div className="flex-1 pb-2 border-b-2 border-dashed border-gray-300">
                             <FormField
                                 control={form.control}
                                 name="name"
-                                render={({ field }) => (
+                                render={({field}) => (
                                     <FormItem className="flex-1">
                                         <FormControl>
                                             <TooltipProvider>
@@ -116,6 +145,7 @@ export default function AddRoom() {
                                                             ref={nameInputRef}
                                                             className="text-4xl md:text-5xl shadow-none lg:text-6xl font-bold bg-transparent border-none focus:ring-0 p-0 h-auto w-full"
                                                             placeholder="Room Name"
+                                                            name={"name"}
                                                             onFocus={() => setIsEditingName(true)}
                                                             onBlur={() => setIsEditingName(false)}
                                                         />
@@ -126,18 +156,19 @@ export default function AddRoom() {
                                                 </Tooltip>
                                             </TooltipProvider>
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage/>
                                     </FormItem>
                                 )}
                             />
                         </div>
                         <Dialog open={isIconDialogOpen} onOpenChange={setIsIconDialogOpen}>
                             <DialogTrigger asChild>
-                                <div className="border border-gray-300 bg-white rounded-lg cursor-pointer w-32 h-32 p-0 flex items-center justify-center">
+                                <div
+                                    className="border border-gray-300 bg-white rounded-lg cursor-pointer w-32 h-32 p-0 flex items-center justify-center">
                                     {(() => {
                                         const selectedIcon = iconList.find((icon) => icon.id === form.getValues('icon'));
                                         const IconComponent = selectedIcon ? selectedIcon.icon : Icons.Home;
-                                        return <IconComponent size={48} />;
+                                        return <IconComponent size={48}/>;
                                     })()}
                                 </div>
                             </DialogTrigger>
@@ -150,11 +181,10 @@ export default function AddRoom() {
                                         {iconList.map((icon) => (
                                             <div
                                                 key={icon.id}
-                                                // variant="outline"
                                                 className="w-16 h-16 p-0 border border-gray-300 bg-white rounded-lg cursor-pointer flex items-center justify-center"
                                                 onClick={() => handleIconSelect(icon.id)}
                                             >
-                                                {React.createElement(icon.icon, { size: 24 })}
+                                                {React.createElement(icon.icon, {size: 24})}
                                             </div>
                                         ))}
                                     </div>
@@ -168,13 +198,13 @@ export default function AddRoom() {
                             <FormField
                                 control={form.control}
                                 name="nature"
-                                render={({ field }) => (
+                                render={({field}) => (
                                     <FormItem>
                                         <FormLabel className={"text-lg font-semibold mb-2"}>Type</FormLabel>
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <FormControl>
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder="Select room type" />
+                                                    <SelectValue placeholder="Select room type"/>
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
@@ -196,13 +226,14 @@ export default function AddRoom() {
                                         className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-gray-400 transition-colors"
                                         onClick={handleAddDevice}
                                     >
-                                        <Icons.Plus className="mx-auto h-12 w-12 text-gray-400" />
+                                        <Icons.Plus className="mx-auto h-12 w-12 text-gray-400"/>
                                         <p className="mt-2 text-sm text-gray-600">Add Device</p>
                                     </div>
                                 ) : (
                                     <ul className="space-y-2">
                                         {form.getValues('devices').map((device: Device, index: number) => (
-                                            <li key={index} className="flex items-center justify-between p-2 bg-secondary rounded-md">
+                                            <li key={index}
+                                                className="flex items-center justify-between p-2 bg-secondary rounded-md">
                                                 <span>{device.name}</span>
                                                 <Button variant="ghost" size="sm">Remove</Button>
                                             </li>
@@ -210,6 +241,8 @@ export default function AddRoom() {
                                     </ul>
                                 )}
                             </div>
+                            <FormError message={error}/>
+                            <FormSuccess message={success}/>
                         </CardContent>
                     </Card>
 
@@ -223,7 +256,7 @@ export default function AddRoom() {
                     </div>
                 </form>
             </Form>
-            <Footer />
+            <Footer/>
         </div>
     )
 }

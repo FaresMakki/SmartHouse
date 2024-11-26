@@ -14,13 +14,9 @@ exports.Signup=async (req,res)=> {
 
         const userexist=await usermodel.findOne({e_mail:req.body.e_mail})
         if(userexist){
-            return res.status(400).json({message:'this user is already exist'});
+            return res.status(400).json({error:'User already exists.'});
 
         }
-
-
-
-
 
         const model = {
             FirstName: req.body.FirstName,
@@ -38,8 +34,7 @@ exports.Signup=async (req,res)=> {
 
         const validation=createUserschema.safeParse(model)
         if (!validation.success){
-            return res.status(400).json({message:validation.error.errors[0].message});
-
+            return res.status(400).json({error:validation.error.errors[0].message});
         }
 
         model.Password=bcrypt.hashSync(model.Password)
@@ -56,45 +51,39 @@ exports.Signup=async (req,res)=> {
         const Emailvalidation = new EmailValidation(Vmodel);
         const savedEV = await Emailvalidation.save();
 
-        res.status(200).json({message:"user added successfully"});
+        res.status(200).json({success: "User added successfully."});
 
     } catch (err) {
-        res.status(400).json({ err });
+        res.status(400).json({error: err });
     }
 }
 exports.logout=async (req,res)=> {
     try{
         res.clearCookie('jwttoken');
-        res.status(200).json({message:"logout"})
+        res.status(200).json({success: "Logout"})
     } catch (err) {
-        res.status(500).json({ error:"internal server error"});
+        res.status(500).json({error: "Internal server error."});
     }
 }
 exports.login=async (req,res)=> {
     try{
-
-
         const validation=loginschema.safeParse({
             e_mail:req.body.e_mail,
             Password:req.body.Password
         })
         if (!validation.success){
-
-            return res.status(400).json({message:validation.error.errors[0].message})
-
+            return res.status(400).json({error:validation.error.errors[0].message})
         }
-
-
         const user=await usermodel.findOne({e_mail:req.body.e_mail})
 
         if(!user){
-            return res.status(400).json({message:"invalid e-mail or password"});
-
+            return res.status(400).json({error: "Invalid e-mail or password."});
         }
+
         const ispasswordmatch= await bcrypt.compare(req.body.Password,user.Password)
 
         if(!ispasswordmatch){
-            return res.status(400).json({message:"invalid e-mail or password"});
+            return res.status(400).json({error: "Invalid e-mail or password."});
         }
         const jwtpayload={
             _id:user._id,
@@ -109,7 +98,7 @@ exports.login=async (req,res)=> {
         res.status(200).cookie("jwttoken", cookie.value,cookie.config).json({ success: "User authenticated successfully." });
 
     } catch (err) {
-        res.status(400).json({ err });
+        res.status(400).json({ error: err });
     }
 }
 exports.AccountActivation=async (req,res)=> {
@@ -120,7 +109,7 @@ exports.AccountActivation=async (req,res)=> {
                 if (!input) {
                     await usermodel.findOne({_id: req.params.id}).then(async (user) => {
                         if (!user) {
-                            return res.status(404).json({message: "Account does not exist"})
+                            return res.status(404).json({error: "Account does not exist"})
                         } else {
                             activationCode = uuidv4()
 
@@ -135,12 +124,12 @@ exports.AccountActivation=async (req,res)=> {
                             const savedEV = await Emailvalidation.save();
 
                             sendConfirmationEmail(user.e_mail, activationCode, user._id)
-                            return res.status(404).json({message: "Token expire wi send you a new Verification email"})
+                            return res.status(404).json({error: "Token expire wi send you a new Verification email"})
 
                         }
 
                     }).catch((err) => {
-                        return res.status(500).json({message: "Internal server error", error: err})
+                        return res.status(500).json({error: err})
 
 
                     })
@@ -151,7 +140,7 @@ exports.AccountActivation=async (req,res)=> {
                         {_id: req.params.id},
                         {$set: {isActive: true}}
                     )
-                    return res.status(200).json({message: "account activated successfully you can go an login"});
+                    return res.status(200).json({success: "account activated successfully you can go an login"});
 
 
                 }
@@ -164,22 +153,23 @@ exports.AccountActivation=async (req,res)=> {
 }
 exports.addroom=async (req,res)=> {
     try{
+        console.log("Hello1")
         const user=await usermodel.findOne({_id:req.user._id})
 
         if (!user){
-            return res.status(400).json({message:"user does not exist"})
+            return res.status(400).json({error:"user does not exist"})
 
         }
         const room = {
             name:req.body.name,
+            icon:req.body.icon,
+            nature:req.body.type,
             devices:[]
         }
         user.Rooms.push(room)
         user.save()
 
-
-
-        res.status(200).json({ message: "Room added successfully" });
+        res.status(200).json({ success: "Room added successfully" });
 
     } catch (err) {
         res.status(400).json({ err });
@@ -187,8 +177,6 @@ exports.addroom=async (req,res)=> {
 }
 exports.addRoomDevice=async (req,res)=> {
     try{
-
-
 
         const modelId = req.params.modelid;
 
@@ -250,15 +238,15 @@ exports.addRoomDevice=async (req,res)=> {
             lastMaintenance: "----",
         }
         const room = user.Rooms.find(Rooms => Rooms._id.toString() === req.params.roomId);
-        if (!room) return res.status(404).json({ message: "Room not found" });
+        if (!room) return res.status(404).json({ error: "Room not found." });
         room.devices.push(device);
         await user.save();
 
-        res.status(200).json({ message:"device added successfully" });
+        res.status(200).json({ success: "Device added successfully." });
 
     } catch (err) {
         console.log(err)
-        res.status(400).json({ err });
+        res.status(400).json({ error: err });
     }
 }
 exports.deleteroom = async (req, res) => {
@@ -266,20 +254,20 @@ exports.deleteroom = async (req, res) => {
         const user = await usermodel.findOne({ _id: req.user._id });
 
         if (!user) {
-            return res.status(400).json({ message: "User does not exist" });
+            return res.status(400).json({ error: "User does not exist." });
         }
 
         const roomIndex = user.Rooms.findIndex(room => room._id.toString() === req.params.id);
 
         if (roomIndex === -1) {
-            return res.status(404).json({ message: "Room not found" });
+            return res.status(404).json({ error: "Room not found." });
         }
 
         user.Rooms.splice(roomIndex, 1);
 
         await user.save();
 
-        res.status(200).json({ message: "Room deleted successfully" });
+        res.status(200).json({ success: "Room deleted successfully." });
     } catch (err) {
         res.status(400).json({ err });
     }
@@ -289,12 +277,12 @@ exports.getAllRooms = async (req, res) => {
         const user = await usermodel.findOne({ _id: req.user._id });
 
         if (!user) {
-            return res.status(400).json({ message: "User does not exist" });
+            return res.status(400).json({ error: "User does not exist." });
         }
 
-        res.status(200).json({ rooms: user.Rooms });
+        res.status(200).json({ success: user.Rooms });
     } catch (err) {
-        res.status(400).json({ err });
+        res.status(400).json({error:  err });
     }
 };
 
@@ -303,20 +291,20 @@ exports.updateroom = async (req, res) => {
         const user = await usermodel.findOne({ _id: req.user._id });
 
         if (!user) {
-            return res.status(400).json({ message: "User does not exist" });
+            return res.status(400).json({ error: "User does not exist." });
         }
 
         const room = user.Rooms.find(room => room._id.toString() === req.params.id);
 
         if (!room) {
-            return res.status(404).json({ message: "Room not found" });
+            return res.status(404).json({ error: "Room not found." });
         }
 
         room.name = req.body.name;
 
         await user.save();
 
-        res.status(200).json({ message: "Room updated successfully" });
+        res.status(200).json({ success: "Room updated successfully." });
     } catch (err) {
         res.status(400).json({ err });
     }
@@ -326,25 +314,25 @@ exports.deleteRoomDevice = async (req, res) => {
         const user = await usermodel.findOne({ _id: req.user._id });
 
         if (!user) {
-            return res.status(400).json({ message: "User does not exist" });
+            return res.status(400).json({ error: "User does not exist." });
         }
 
         const room = user.Rooms.find(room => room._id.toString() === req.params.roomId);
         if (!room) {
-            return res.status(404).json({ message: "Room not found" });
+            return res.status(404).json({ error: "Room not found." });
         }
 
         const deviceIndex = room.devices.findIndex(device => device._id.toString() === req.params.deviceId);
 
         if (deviceIndex === -1) {
-            return res.status(404).json({ message: "Device not found" });
+            return res.status(404).json({ error: "Device not found." });
         }
 
         room.devices.splice(deviceIndex, 1);
 
         await user.save();
 
-        res.status(200).json({ message: "Device deleted successfully" });
+        res.status(200).json({ success: "Device deleted successfully." });
     } catch (err) {
         console.log(err);
         res.status(400).json({ err });
@@ -355,15 +343,15 @@ exports.getRoomDevices = async (req, res) => {
         const user = await usermodel.findOne({ _id: req.user._id });
 
         if (!user) {
-            return res.status(400).json({ message: "User does not exist" });
+            return res.status(400).json({ error: "User does not exist." });
         }
 
         const room = user.Rooms.find(room => room._id.toString() === req.params.roomId);
         if (!room) {
-            return res.status(404).json({ message: "Room not found" });
+            return res.status(404).json({ error: "Room not found." });
         }
 
-        res.status(200).json({ devices: room.devices });
+        res.status(200).json({ success: room.devices });
     } catch (err) {
         console.log(err);
         res.status(400).json({ err });

@@ -5,8 +5,8 @@ const {AdminAuth} = require("../utils/AdminAuth");
 
 
 router.post("/add",AdminAuth,product.AddProduct)
-router.delete("/delete/:id",AdminAuth,product.deleteProduct)
-router.put("/update/:id",AdminAuth,product.updateProduct)
+router.post("/delete/:id",AdminAuth,product.deleteProduct)
+router.post("/update/:id",AdminAuth,product.updateProduct)
 router.get("/getall",AdminAuth,product.getAllProducts)
 
 

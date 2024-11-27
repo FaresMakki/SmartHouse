@@ -19,7 +19,9 @@ exports.AddSubProduct=async (req,res)=> {
         const subProd = {
             name:req.body.name,
             models: [],
-            picture:req.body.picture
+            picture:req.body.picture,
+            description:req.body.description,
+            settings:req.body.settings
         };
         product.subDevices.push(subProd);
         await product.save();
@@ -93,6 +95,7 @@ exports.getAllSubProducts = async (req, res) => {
                                 _id: "$$subDevice._id",
                                 name: "$$subDevice.name",
                                 picture: "$$subDevice.picture",
+                                createdAt: "$$subDevice.createdAt",
                             }
                         }
                     }
@@ -108,10 +111,9 @@ exports.getAllSubProducts = async (req, res) => {
 
         }
 
-        res.status(200).json({
-            message: "Sub-products retrieved successfully",
-            subProducts: product[0]
-        });
+        res.status(200).json(
+            product[0]
+        );
     } catch (err) {
         res.status(400).json({ err: err.message });
     }

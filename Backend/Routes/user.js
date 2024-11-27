@@ -10,9 +10,14 @@ const {UserAuth} = require("../utils/UserAuth");
 
 router.post("/signup",user.Signup)
 router.post("/verify/:activationcode/:id",user.AccountActivation)
-router.post("/login",user.login)
+
 router.get("/logout",user.logout)
+
+router.post("/login",user.login)
 router.post("/room",UserAuth,user.addroom)
+
+
+
 router.delete("/delroom/:id",UserAuth,user.deleteroom)
 router.put("/updateroom/:id",UserAuth,user.updateroom)
 router.get("/getallroom",UserAuth,user.getAllRooms)

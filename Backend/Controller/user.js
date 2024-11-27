@@ -283,7 +283,6 @@ exports.getAllRooms = async (req, res) => {
         res.status(400).json({error:  err });
     }
 };
-
 exports.updateroom = async (req, res) => {
     try {
         const user = await usermodel.findOne({ _id: req.user._id });

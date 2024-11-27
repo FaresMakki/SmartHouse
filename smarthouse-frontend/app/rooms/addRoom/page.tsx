@@ -41,22 +41,22 @@ interface Device {
 const roomNatures = ["Living Room", "Bedroom", "Kitchen", "Bathroom", "Balcony", "Garage", "Garden", "Office", "Basement", "Attic", "Dining Room", "Hallway", "Laundry Room", "Library", "Lobby", "Pantry", "Playroom", "Studio", "Terrace", "Veranda", "Walk-in Closet", "Workshop"]
 
 const iconList = [
-    {id: 'home', icon: Icons.Home},
-    {id: 'bed', icon: Icons.Bed},
-    {id: 'sofa', icon: Icons.Sofa},
-    {id: 'tv', icon: Icons.Tv},
-    {id: 'kitchen', icon: Icons.Utensils},
-    {id: 'bathroom', icon: Icons.Bath},
-    {id: 'office', icon: Icons.Briefcase},
-    {id: 'garden', icon: Icons.Flower2},
-    {id: 'garage', icon: Icons.Car},
-    {id: 'gym', icon: Icons.Dumbbell},
-    {id: 'laundry', icon: Icons.WashingMachine},
-    {id: 'playroom', icon: Icons.Gamepad2},
-    {id: 'study', icon: Icons.BookOpen},
-    {id: 'workshop', icon: Icons.Wrench},
-    {id: 'balcony', icon: Icons.Wind},
-    {id: 'closet', icon: Icons.Shirt},
+    {id: 'Home', icon: Icons.Home},
+    {id: 'Bed', icon: Icons.Bed},
+    {id: 'Sofa', icon: Icons.Sofa},
+    {id: 'Tv', icon: Icons.Tv},
+    {id: 'Utensils', icon: Icons.Utensils},
+    {id: 'Bath', icon: Icons.Bath},
+    {id: 'Briefcase', icon: Icons.Briefcase},
+    {id: 'Flower2', icon: Icons.Flower2},
+    {id: 'Car', icon: Icons.Car},
+    {id: 'Dumbbell', icon: Icons.Dumbbell},
+    {id: 'WashingMachine', icon: Icons.WashingMachine},
+    {id: 'Gamepad2', icon: Icons.Gamepad2},
+    {id: 'BookOpen', icon: Icons.BookOpen},
+    {id: 'Wrench', icon: Icons.Wrench},
+    {id: 'Wind', icon: Icons.Wind},
+    {id: 'Shirt', icon: Icons.Shirt},
 ]
 
 export default function AddRoom() {

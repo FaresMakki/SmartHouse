@@ -41,9 +41,19 @@ export default function RoomsManagement() {
     const [isOverlayOpen, setIsOverlayOpen] = useState(false);
 
     const getRoomIcon = (iconName: string): React.ElementType => {
+        const normalizedIconName =
+            iconName.charAt(0).toUpperCase() + iconName.slice(1).toLowerCase();
+
         // @ts-ignore
-        return Icons[iconName] || Icons.Home; // Default to "Home" if the iconName is not recognized
+        if (Icons[normalizedIconName]) {
+            // @ts-ignore
+            return Icons[normalizedIconName];
+        }
+
+        console.warn(`Icon "${normalizedIconName}" not found. Falling back to "Home".`);
+        return Icons.Home;
     };
+
 
 
     useEffect(() => {
@@ -61,6 +71,7 @@ export default function RoomsManagement() {
                 .then((data) => {
                     console.log("Fetched data:", data.success);
                     if (data.success) {
+                        console.log("Setting rooms:", data.success);
                         setRooms(
                             data.success.map((room: any) => ({
                                 name: room.name,
@@ -70,7 +81,9 @@ export default function RoomsManagement() {
                         );
                     }
                 })
-                .catch((error) => console.error("Error Fetching Rooms:", error));
+                .catch((error) => {
+                    console.error("Error Fetching Rooms:", error)
+                });
         });
     }, []);
 

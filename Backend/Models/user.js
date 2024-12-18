@@ -7,6 +7,7 @@ const deviceSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+
     deviceName: {
         type: String,
         required: true
@@ -18,6 +19,11 @@ const deviceSchema = new mongoose.Schema({
     Settings: {
         type: {},
         required: true
+    },
+    status: {
+        type: String,
+        enum: ["on", "off"],
+        default: "off"
     },
     picture: {
         type: String,

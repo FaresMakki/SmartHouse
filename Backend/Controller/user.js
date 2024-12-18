@@ -8,6 +8,7 @@ const EmailValidation=require("../Models/EmailValidation")
 const {setcookies} = require("../utils/generateToken");
 // const {verifyTokenS} = require("../utils/VerifyTokenS");
 const {Types} = require("mongoose");
+const {transformSettings} = require("../utils/settingsmanagment");
 
 exports.Signup=async (req,res)=> {
     try{
@@ -232,13 +233,15 @@ exports.addRoomDevice=async (req,res)=> {
 
         const user=await usermodel.findOne({_id:req.user._id})
 
+        const transformed = transformSettings(prod[0].subDevice.settings);
 
         const device={
             deviceType: prod[0].category,
             deviceName: prod[0].subDevice.name,
             modelName: prod[0].subDevice.models.modelName,
-            Settings: prod[0].subDevice.settings,
+            Settings: transformed,
             picture: prod[0].subDevice.picture
+
         }
 
         const room = user.Rooms.find(Rooms => Rooms._id.toString() === req.params.roomId);

@@ -7,7 +7,6 @@ import Image from "next/image";
 import AdminSideBar from "@/components/adminsideBar";
 import {Button} from "@/components/ui/button";
 import {Edit, Plus,Trash} from "lucide-react";
-import AddNewDeviceDialogue from "@/components/AddNewDeviceDialogue";
 import {deleteProduct, GetAlldevices, GetCategorys, handelasyncparams} from "@/utils-front/ProductsCalls";
 import NotAvailable from "@/components/NotAvailable";
 import SubCategoryCard from "@/components/SubCategoryCard";
@@ -15,6 +14,7 @@ import SubCatListView from "@/components/sub-cat-list-view";
 import RoomSkeleton from "@/components/room-skeleton";
 import DeleteSubcat from "@/components/DeleteSubCat";
 import UpdateSubcategory from "@/components/UpdateSubcategory";
+import AddNewDeviceDialogue from "@/components/AddNewDeviceDialogue";
 // import DeleteSubcat from "@/components/DeleteSubcat";
 
 interface producthandelprops{
@@ -100,21 +100,21 @@ const Page =   ({params}: producthandelprops) => {
                                     )}
                             </div>
 
-                            {/* List View for Small Screens */}
-                            <div className="flex flex-col gap-4 md:hidden">
-                                {ProductList.length > 0 ? (
-                                    ProductList.map((product, index) => (
+                        {/*    /!* List View for Small Screens *!/*/}
+                        {/*    <div className="flex flex-col gap-4 md:hidden">*/}
+                        {/*        {ProductList.length > 0 ? (*/}
+                        {/*            ProductList.map((product, index) => (*/}
 
-                                        <SubCatListView prodid={setProdID} updateModel={setUpdateModel} deletemodel={setDeleteModel} product={product} key={index}/>
-                                    ))
-                                ) : (
-                                    <NotAvailable/>
-                                )}
+                        {/*                <SubCatListView prodid={setProdID} updateModel={setUpdateModel} deletemodel={setDeleteModel} product={product} key={index}/>*/}
+                        {/*            ))*/}
+                        {/*        ) : (*/}
+                        {/*            <NotAvailable/>*/}
+                        {/*        )}*/}
                             </div>
                         </div>
 
 
-                    </div>
+                    // </div>
                 )
                 }
                 <AddNewDeviceDialogue setlen={setLen} setspinner={setspinner} list={ProductList} setlist={setProductList}  setAddModel={setAddModel} AddModel={AddModel} />

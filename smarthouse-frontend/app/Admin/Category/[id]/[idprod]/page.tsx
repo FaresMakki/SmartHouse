@@ -21,6 +21,10 @@ import SubCatListView from "@/components/sub-cat-list-view";
 import RoomSkeleton from "@/components/room-skeleton";
 import DeleteSubcat from "@/components/DeleteSubCat";
 import UpdateSubcategory from "@/components/UpdateSubcategory";
+import AddNewModelDialogue from "@/components/AddNewModelDialogue";
+import DeleteModelDialogue from "@/components/DeleteModelDialogue";
+import UpdateModelDialogue from "@/components/UpdateModelDialogue";
+import ModelCard from "@/components/ModelCard";
 // import DeleteSubcat from "@/components/DeleteSubcat";
 
 interface producthandelprops{
@@ -36,6 +40,7 @@ const Page =   ({params}: producthandelprops) => {
     const [test, setTest] = useState(false)
     const [prodID, setProdID] = useState("")
     // @ts-ignore
+
 
     const { id,idprod } = use(params);
     console.log(id,idprod)
@@ -59,6 +64,8 @@ const Page =   ({params}: producthandelprops) => {
     useEffect(() => {
         fetchModels()
     }, [test]);
+
+    console.log(ProductList)
 
     return (
         <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased  text-gray-800">
@@ -102,7 +109,7 @@ const Page =   ({params}: producthandelprops) => {
                                         ProductList.map((product, index) => (
 
 
-                                            <SubCategoryCard idcat={id} prodid={setProdID} updateModel={setUpdateModel} deletemodel={setDeleteModel}  key={index}  product={product}/>
+                                            <ModelCard idcat={id} prodid={setProdID} updateModel={setUpdateModel} deletemodel={setDeleteModel}  key={index}  product={product}/>
                                         ))
                                     ) : (
                                         <NotAvailable/>
@@ -110,16 +117,16 @@ const Page =   ({params}: producthandelprops) => {
                             </div>
 
                             {/* List View for Small Screens */}
-                            <div className="flex flex-col gap-4 md:hidden">
-                                {ProductList.length > 0 ? (
-                                    ProductList.map((product, index) => (
+                            {/*<div className="flex flex-col gap-4 md:hidden">*/}
+                            {/*    {ProductList.length > 0 ? (*/}
+                            {/*        ProductList.map((product, index) => (*/}
 
-                                        <SubCatListView prodid={setProdID} updateModel={setUpdateModel} deletemodel={setDeleteModel} product={product} key={index}/>
-                                    ))
-                                ) : (
-                                    <NotAvailable/>
-                                )}
-                            </div>
+                            {/*            <SubCatListView prodid={setProdID} updateModel={setUpdateModel} deletemodel={setDeleteModel} product={product} key={index}/>*/}
+                            {/*        ))*/}
+                            {/*    ) : (*/}
+                            {/*        <NotAvailable/>*/}
+                            {/*    )}*/}
+                            {/*</div>*/}
                         </div>
 
 

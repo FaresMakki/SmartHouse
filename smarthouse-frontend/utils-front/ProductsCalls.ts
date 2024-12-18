@@ -117,14 +117,14 @@ export async function GetAlldevices(params):Promise<any[]>{
 
 }
 export async function GetAlldevicesModels(idcat,idprod):Promise<any[]>{
-    const response=await  fetch(`http://localhost:3001/product/getSubProd/${idcat}/${idprod}`, {cache:'no-store'})
+    const response=await  fetch(`http://localhost:3001/product/getProdModel/${idcat}/${idprod}`, {cache:'no-store'})
     if (!response.ok) {
         throw new Error('fetch failed');
     }
 
     const data= await response.json()
 
-    return data.subDevices
+    return data.models
 
 }
 

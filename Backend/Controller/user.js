@@ -318,6 +318,31 @@ exports.getRoomsbyid = async (req, res) => {
     }
 };
 
+// exports.updateroom = async (req, res) => {
+//     try {
+//         const user = await usermodel.findOne({ _id: req.user._id });
+//
+//         if (!user) {
+//             return res.status(400).json({ error: "User does not exist." });
+//         }
+//
+//         const room = user.Rooms.find(room => room._id.toString() === req.params.id);
+//
+//         if (!room) {
+//             return res.status(404).json({ error: "Room not found." });
+//         }
+//
+//
+//         room.name = req.body.name;
+//
+//         await user.save();
+//
+//         res.status(200).json({ success: "Room updated successfully." });
+//     } catch (err) {
+//         res.status(400).json({ err });
+//     }
+// };
+
 exports.updateroom = async (req, res) => {
     try {
         const user = await usermodel.findOne({ _id: req.user._id });
@@ -332,15 +357,38 @@ exports.updateroom = async (req, res) => {
             return res.status(404).json({ error: "Room not found." });
         }
 
-        room.name = req.body.name;
+        if (req.body.name) {
+            room.name = req.body.name;
+        }
+        if (req.body.icon) {
+            room.icon = req.body.icon;
+        }
+        if (req.body.nature) {
+            const allowedNatures = [
+                "Living Room", "Bedroom", "Kitchen", "Bathroom", "Balcony", "Garage",
+                "Garden", "Office", "Basement", "Attic", "Dining Room", "Hallway",
+                "Laundry Room", "Library", "Lobby", "Pantry", "Playroom", "Studio",
+                "Terrace", "Veranda", "Walk-in Closet", "Workshop"
+            ];
+
+            if (allowedNatures.includes(req.body.nature)) {
+                room.nature = req.body.nature;
+            } else {
+                return res.status(400).json({ error: "Invalid room nature provided." });
+            }
+        }
+        if(req.body.devices){
+            room.devices = req.body.devices;
+        }
 
         await user.save();
 
         res.status(200).json({ success: "Room updated successfully." });
     } catch (err) {
-        res.status(400).json({ err });
+        res.status(500).json({ error: "An error occurred while updating the room.", details: err });
     }
 };
+
 exports.deleteRoomDevice = async (req, res) => {
     try {
         const user = await usermodel.findOne({ _id: req.user._id });

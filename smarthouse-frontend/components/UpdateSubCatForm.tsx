@@ -1,9 +1,23 @@
 import React, {useState} from 'react';
 import DevicesAttribute from "@/utils-front/DevicesAttributes";
 import {ADDProduct, UpdateProduct} from "@/utils-front/ProductsCalls";
-import {Activity, Home, Lightbulb, Smartphone, Wifi} from "lucide-react";
+import {
+    Activity, Battery,
+    Camera, Car, Cpu, Fan, Gamepad2, HardDrive, Headphones,
+    Home, Keyboard, Lamp,
+    Laptop,
+    Lightbulb, Lock,
+    Monitor, Mouse, Plug,
+    Printer, Refrigerator,
+    Router, Shield,
+    Smartphone,
+    Tablet, Thermometer,
+    Tv, WashingMachine, Watch,
+    Wifi, Wind
+} from "lucide-react";
 import {FormError} from "@/components/form-error";
 import SubCategory from "@/utils-front/Lists";
+import {AnimatePresence, motion} from "framer-motion";
 
 const categoryIcons = {
     "Home Appliances": <Home className="text-blue-500 w-6 h-6" />,
@@ -24,7 +38,6 @@ interface UpdateSubCatFormProps {
 const UpdateSubCatForm = ({setUpdateModel,setlist,setspinner,list,idcat,productid}:UpdateSubCatFormProps) => {
     const [deviceName, setDeviceName] = useState("");
     // const [categoryDescription, setCategoryDescription] = useState("");
-    const [deviceImage, setDeviceImage] = useState("");
     const [currentcategory, setCurrentcategory] = useState(0);
 
     const [deviceAttributesByCategory, setDeviceAttributesByCategory] = useState({});
@@ -54,15 +67,51 @@ const UpdateSubCatForm = ({setUpdateModel,setlist,setspinner,list,idcat,producti
         return deviceAttributesByCategory[currentCategory]?.includes(attr) || false;
     }
 
-    const handleImageUpload = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setDeviceImage(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        }    };
+
+
+
+
+    const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
+    const [showIconDropdown, setShowIconDropdown] = useState(false);
+
+
+
+    const deviceIconList = [
+        { id: "Smartphone", icon: Smartphone },
+        { id: "Tablet", icon: Tablet },
+        { id: "Laptop", icon: Laptop },
+        { id: "Monitor", icon: Monitor },
+        { id: "Tv", icon: Tv },
+        { id: "Router", icon: Router },
+        { id: "Wifi", icon: Wifi },
+        { id: "Camera", icon: Camera },
+        { id: "Printer", icon: Printer },
+        { id: "Keyboard", icon: Keyboard },
+        { id: "Mouse", icon: Mouse },
+        { id: "Gamepad", icon: Gamepad2 },
+        { id: "Headphones", icon: Headphones },
+        { id: "SmartWatch", icon: Watch },
+        { id: "Refrigerator", icon: Refrigerator },
+        { id: "WashingMachine", icon: WashingMachine },
+        { id: "Fan", icon: Fan },
+        { id: "Lamp", icon: Lamp },
+        { id: "Thermometer", icon: Thermometer },
+        { id: "Plug", icon: Plug },
+        { id: "Battery", icon: Battery },
+        { id: "Activity", icon: Activity },
+        { id: "Car", icon: Car },
+        { id: "Shield", icon: Shield },
+        { id: "Lock", icon: Lock },
+        { id: "Wind", icon: Wind },
+        { id: "Cpu", icon: Cpu },
+        { id: "HardDrive", icon: HardDrive },
+    ];
+
+
+
+
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -81,7 +130,7 @@ const UpdateSubCatForm = ({setUpdateModel,setlist,setspinner,list,idcat,producti
 
         let Device = {
             ...(deviceName && { name: deviceName }),
-            ...(deviceImage && { picture: deviceImage }),
+            ...(selectedIcon && { picture: selectedIcon }),
             ...(Object.keys(settings).length > 0 && { settings: settings })
         };
         setUpdateModel(false)
@@ -111,44 +160,7 @@ const UpdateSubCatForm = ({setUpdateModel,setlist,setspinner,list,idcat,producti
 
 
     };
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     let settings = {}
-    //     for (const category in deviceAttributesByCategory) {
-    //         for (const attribute of deviceAttributesByCategory[category]) {
-    //             if (category === "Sensors") {
-    //                 settings[attribute] = "readOnly"
-    //
-    //             } else {
-    //                 settings[attribute] = "readWrite"
-    //             }
-    //         }
-    //
-    //     }
-    //
-    //     let Device = {
-    //         ...(deviceName && { name: deviceName }),
-    //         ...(deviceImage && { picture: deviceImage }),
-    //         ...(Object.keys(settings).length > 0 && { settings: settings })
-    //     };
-    //     setUpdateModel(false)
-    //     setspinner(true)
-    //     const previousProducts = [...list]
-    //
-    //     try {
-    //         const Dev=await ADDProduct(Device)
-    //         setlist([...list, Dev]);
-    //         console.log("Product added successfully");
-    //
-    //     }catch (err){
-    //         console.error("Error adding product:", err);
-    //         setlist(previousProducts);
-    //     }finally {
-    //         setspinner(false);
-    //     }
-    //
-    //
-    // };
+
 
     return (
         <form onSubmit={handleSubmit} className="space-y-7">
@@ -160,14 +172,46 @@ const UpdateSubCatForm = ({setUpdateModel,setlist,setspinner,list,idcat,producti
                 className="w-full p-2 border border-gray-300 rounded-lg "
             />
 
-            <input
-                placeholder={"Device Image"}
-                type="file"
-                // onChange={handleImageUpload}
-                onChange={handleImageUpload}
 
-                className="w-full p-2 border border-gray-300 text-gray-700 py-3 rounded-lg"
-            />
+            <div className="relative">
+                <button
+                    type="button"
+                    onClick={() => setShowIconDropdown(!showIconDropdown)}
+                    className="w-full p-2 bg-gray-100 border rounded-lg"
+                >
+                    {selectedIcon ? `Selected: ${selectedIcon}` : "Choose Icon"}
+                </button>
+                <AnimatePresence>
+                    {showIconDropdown && (
+                        <motion.div
+                            initial={{opacity: 0, y: -20}}
+                            animate={{opacity: 1, y: 0}}
+                            exit={{opacity: 0, y: -20}}
+                            transition={{duration: 0.3, ease: "easeInOut"}}
+                            className="absolute top-full mt-2 w-full bg-white border rounded-lg shadow-lg p-3 grid grid-cols-4 gap-2 z-10">
+                            {deviceIconList.map((device) => (
+                                <button
+                                    key={device.id}
+                                    type="button"
+                                    onClick={() => {
+                                        setSelectedIcon(device.id);
+                                        setShowIconDropdown(false);
+                                    }}
+                                    className={`flex flex-col items-center p-2 rounded-lg hover:bg-gray-200 ${
+                                        selectedIcon === device.id ? "bg-green-200" : ""
+                                    }`}
+                                >
+                                    <device.icon className="w-6 h-6 text-gray-700"/>
+                                    <span className="text-xs">{device.id}</span>
+                                </button>
+                            ))}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+            </div>
+
+
             <nav className="flex justify-center gap-6">
                 {DevicesAttribute.map((category, index) => (
                     <button
@@ -213,7 +257,7 @@ const UpdateSubCatForm = ({setUpdateModel,setlist,setspinner,list,idcat,producti
 
                 <button
                     type="submit"
-                    className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
+                    className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
                 >
                     Submit
                 </button>

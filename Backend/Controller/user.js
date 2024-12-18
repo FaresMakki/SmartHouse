@@ -520,6 +520,19 @@ exports.addPersonelDevice=async (req,res)=> {
         res.status(400).json({ error: err });
     }
 }
+exports.getPersonelDevices=async (req,res)=> {
+    try{
+
+
+        const user=await usermodel.findOne({_id:req.user._id})
+
+        res.status(200).json({ success: "Device added successfully.",devices:user.PersonalDevices });
+
+    } catch (err) {
+        console.log(err)
+        res.status(400).json({ error: err });
+    }
+}
 
 
 

@@ -25,6 +25,7 @@ router.get("/getroombyid/:roomid",UserAuth,user.getRoomsbyid)
 router.post("/adddevice/:modelid/:roomId",UserAuth,user.addRoomDevice)
 router.post("/deletedevice/:deviceId/:roomId",UserAuth,user.deleteRoomDevice)
 router.get("/getroomdevices/:roomId",UserAuth,user.getRoomDevices)
+router.post("/addPersonelDevice/:modelid",UserAuth,user.addPersonelDevice)
 
 
 

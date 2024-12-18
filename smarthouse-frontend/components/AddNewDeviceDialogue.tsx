@@ -9,8 +9,9 @@ interface AddNewDeviceDialogueProps {
     setlist:any;
     AddModel: boolean;
     setAddModel: any;
+    idcat:any;
 }
-const AddNewDeviceDialogue = ({setAddModel,AddModel,setlist,setlen,setspinner,list}:AddNewDeviceDialogueProps) => {
+const AddNewDeviceDialogue = ({idcat,setAddModel,AddModel,setlist,setlen,setspinner,list}:AddNewDeviceDialogueProps) => {
 
 
 
@@ -71,7 +72,7 @@ const AddNewDeviceDialogue = ({setAddModel,AddModel,setlist,setlen,setspinner,li
                         </div>
 
 
-                        <AddProductForm setlen={setlen} setspinner={setspinner} list={list} setlist={setlist} setaddModel={setAddModel}/>
+                        <AddProductForm idcat={idcat} setlen={setlen} setspinner={setspinner} list={list} setlist={setlist} setaddModel={setAddModel}/>
                     </div>
                 </div>
             </dialog>

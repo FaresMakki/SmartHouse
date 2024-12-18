@@ -37,6 +37,7 @@ const Page =   ({params}: producthandelprops) => {
         try {
             const categories = await GetAlldevices(id); // Fetch categories
             await setProductList(categories); // Update state
+
         } catch (error) {
             console.error("Error fetching categories:", error);
         } finally {
@@ -52,7 +53,6 @@ const Page =   ({params}: producthandelprops) => {
         fetchDevices()
     }, [test]);
 
-    console.log(id)
     return (
         <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased  text-gray-800">
 
@@ -117,7 +117,7 @@ const Page =   ({params}: producthandelprops) => {
                     // </div>
                 )
                 }
-                <AddNewDeviceDialogue setlen={setLen} setspinner={setspinner} list={ProductList} setlist={setProductList}  setAddModel={setAddModel} AddModel={AddModel} />
+                <AddNewDeviceDialogue idcat={id} setlen={setLen} setspinner={setspinner} list={ProductList} setlist={setProductList}  setAddModel={setAddModel} AddModel={AddModel} />
                 <DeleteSubcat DeleteModels={DeleteModel} setDeleteModels={setDeleteModel} idcat={id} productid={prodID} list={ProductList} setlist={setProductList} setspinner={setspinner} setlen={setLen} />
                 <UpdateSubcategory productid={prodID}  setspinner={setspinner} list={ProductList} idcat={id} setlist={setProductList} UpdateModel={UpdateModel} setUpdateModel={setUpdateModel}/>
             </div>

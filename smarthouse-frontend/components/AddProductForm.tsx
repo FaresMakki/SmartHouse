@@ -65,8 +65,9 @@ interface AddProductFormProps {
     list:any;
     setlist:any;
     setaddModel:any
+    idcat:any;
 }
-const AddProductForm = ({setaddModel,setlist,setspinner,setlen,list}:AddProductFormProps) => {
+const AddProductForm = ({idcat,setaddModel,setlist,setspinner,setlen,list}:AddProductFormProps) => {
     const [deviceName, setDeviceName] = useState("");
     const [currentcategory, setCurrentcategory] = useState(0);
 
@@ -89,7 +90,6 @@ const AddProductForm = ({setaddModel,setlist,setspinner,setlen,list}:AddProductF
                 [currentCategory]: newAttributes,
             };
         });
-        console.log(deviceAttributesByCategory);
     }
 
     function isAttributeChecked(attr) {
@@ -252,23 +252,22 @@ const AddProductForm = ({setaddModel,setlist,setspinner,setlen,list}:AddProductF
         }
 
 
-
-
-
-            let Device = {
+        //@ts-ignore
+        const iconName = deviceIconList.find((device) => device.id === selectedIcon)?.icon?.render.name;
+        let Device = {
             name: deviceName ,
-            picture: selectedIcon ,
+            picture: iconName ,
             settings: settings
         };
+        console.log(Device)
         setaddModel(false)
         setspinner(true)
         setlen(list.length + 1)
         const previousProducts = [...list]
 
         try {
-            const Dev=await ADDProduct(Device)
+            const Dev=await ADDProduct(idcat, Device)
             setlist([...list, Dev]);
-            console.log("Product added successfully");
 
         }catch (err){
             console.error("Error adding product:", err);

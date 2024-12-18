@@ -78,7 +78,6 @@ import {
 const ModelCard = ({product,prodid,deletemodel,updateModel,idcat}:SubCategoryCardProps) => {
     const [loading, setLoading] = useState(true)
 
-    // console.log(`le prod id ${product._id}`)
     async function handelDelete() {
         deletemodel(true)
         prodid(product._id)
@@ -92,7 +91,6 @@ const ModelCard = ({product,prodid,deletemodel,updateModel,idcat}:SubCategoryCar
     useEffect(() => {
         setLoading(true);
     }, []);
-    console.log(product)
     const Icon = iconMap[product.picture] || null;
 
 
@@ -116,7 +114,7 @@ const ModelCard = ({product,prodid,deletemodel,updateModel,idcat}:SubCategoryCar
                             <div className="text-center w-full truncate">
 
                                 <h1 className="text-lg font-semibold text-gray-800 truncate">{product.modelName || "Unnamed Product"}</h1>
-                                <span className="text-gray-500 text-sm">{product.createdAt?.slice(0, 10)}</span>
+                                <span className="text-gray-500 text-sm">created At{product.createdAt?.slice(0, 10)}</span>
 
                             </div>
                         </div>

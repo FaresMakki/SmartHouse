@@ -40,28 +40,48 @@ const LoginForm = () => {
     const onLogin = (data) => {
         setError("");
         setSuccess("");
-        startTransition(() => {
-            fetch('http://localhost:3001/user/login', {
+
+        startTransition(async () => {
+            const credentials = {
+                e_mail: data.email,
+                Password: data.password,
+            };
+
+            // Attempt admin login
+            const adminResponse = await fetch("http://localhost:3001/admin/login", {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
+                headers: { "Content-Type": "application/json" },
                 credentials: "include",
-                body: JSON.stringify({
-                    e_mail: data.email,
-                    Password: data.password
-                }),
-            })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.success) {
-                        setSuccess("Login successful!");
-                        router.push("/home"); // Redirect to homepage
-                    } else {
-                        setError(result.message || "Login failed");
-                    }
-                })
-                .catch(error => setError("Network error, please try again later."));
+                body: JSON.stringify(credentials),
+            });
+
+            if (adminResponse.ok) {
+                setSuccess("Admin login successful!");
+                router.push("/Admin/dashboard"); // Redirect to admin homepage
+                return;
+            }
+
+            // Attempt user login
+            const userResponse = await fetch("http://localhost:3001/user/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(credentials),
+            });
+
+            if (userResponse.ok) {
+                setSuccess("User login successful!");
+                router.push("/home"); // Redirect to user homepage
+                return;
+            }
+
+            setError(
+                "Login failed. Please try again."
+            );
         });
     };
+
+
 
     const handleGoogleLogin = () => {
         window.location.href = 'http://localhost:3001/user/auth/google';

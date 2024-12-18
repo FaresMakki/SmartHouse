@@ -3,14 +3,15 @@ import React, { useEffect, useState } from "react";
 import AddProductForm from "@/components/AddProductForm";
 
 interface AddNewDeviceDialogueProps {
-    SetTest: any;
-    test: boolean;
+    setlen:any;
+    setspinner:any;
+    list:any;
+    setlist:any;
     AddModel: boolean;
     setAddModel: any;
 }
-const AddNewDeviceDialogue = ({setAddModel,AddModel,test,SetTest}:AddNewDeviceDialogueProps) => {
+const AddNewDeviceDialogue = ({setAddModel,AddModel,setlist,setlen,setspinner,list}:AddNewDeviceDialogueProps) => {
 
-    console.log("AddModel",AddModel)
 
 
 
@@ -33,7 +34,7 @@ const AddNewDeviceDialogue = ({setAddModel,AddModel,test,SetTest}:AddNewDeviceDi
 
             <dialog
                 open={AddModel}
-                className="fixed z-50    inset-0 flex justify-center items-center"
+                className="fixed z-50     inset-0 flex justify-center items-center"
             >
 
                 <div
@@ -41,15 +42,15 @@ const AddNewDeviceDialogue = ({setAddModel,AddModel,test,SetTest}:AddNewDeviceDi
                     aria-hidden="true"
                 ></div>
 
-                <div className="w-full z-50 rounded-2xl max-w-lg bg-white r  shadow-xl">
-                    <div className="px-16 py-12 py-4">
+                <div className="w-full z-50 rounded-2xl max-w-lg bg-white border border-green-800 border-5  shadow-2xl">
+                    <div className="px-16 py-14">
                         <div className="absolute top-4 left-4 flex gap-6 justify-center items-center  ">
                             <button
-                                className=" flex items-center justify-center h-8 w-8 rounded-full bg-red-100 hover:bg-red-200"
+                                className=" flex items-center justify-center h-8 w-8 rounded-full bg-green-100 hover:bg-green-200"
                                 onClick={() => setAddModel(false)}
                             >
                                 <svg
-                                    className="h-6 w-6 text-red-600"
+                                    className="h-6 w-6 text-green-600"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -70,8 +71,7 @@ const AddNewDeviceDialogue = ({setAddModel,AddModel,test,SetTest}:AddNewDeviceDi
                         </div>
 
 
-                        <h2 className="text-xl font-semibold text-gray-800 text-center mb-4"></h2>
-                        <AddProductForm setTest={SetTest} test={test} />
+                        <AddProductForm setlen={setlen} setspinner={setspinner} list={list} setlist={setlist} setaddModel={setAddModel}/>
                     </div>
                 </div>
             </dialog>

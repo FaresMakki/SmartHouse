@@ -1,32 +1,59 @@
 import React, {useState} from 'react';
-import {Button} from "@/components/ui/button";
-import {DeleteCategory, UpdateCategory} from "@/utils-front/ProductsCalls";
-interface DeleteModelProps {
+import {deleteProduct} from "@/utils-front/ProductsCalls";
+interface DeleteSubcatProps {
+    idcat: any;
+    productid: any;
+    list: any;
+    setlist: any;
+    setspinner: any;
+    setlen: any;
+    DeleteModels: any;
     setDeleteModels: any;
-    DeleteModels: boolean;
-    category: any;
-    test: any;
-    SetTest: any;
 
 }
-const DeleteModel = ({DeleteModels,setDeleteModels,category,test,SetTest}:DeleteModelProps) => {
+
+const DeleteSubcat = ({list,setlen,setlist,setspinner,productid,idcat,DeleteModels,setDeleteModels}:DeleteSubcatProps) => {
     const [deletsString, setDeletsString] = useState("")
-    function DeleteCat() {
+
+    async function handelDelete() {
+        // setLoading(false)
         if (deletsString !== "Delete") {
             alert("Please type 'Delete' to confirm")
             return
         }
-            return DeleteCategory( category._id)
-            .then(() => {
-                setDeleteModels(false); // Close the dialog
-                SetTest(!test); // Trigger re-fetch of categories
-            })
-            .catch((error) => {
-                console.error("Error Deleting category:", error.message);
-            });
+        console.log(list)
+        const previousProducts = [...list]; // Save the current state
+        setlen(list.length - 1)
+        console.log(previousProducts)
+        const updatedProducts = list.filter((prod) => prod._id !== productid);
+        console.log(updatedProducts)
+        setlist(updatedProducts);
+        setDeleteModels(false)
+
+        setspinner(true)
+
+        try {
+            // Send the delete request to the server
+            await deleteProduct(idcat, productid)
+            console.log("Product deleted successfully");
+        } catch (error) {
+            console.error("Error deleting product:", error);
+            // Roll back to the previous state if API call fails
+            setlist(previousProducts);
+        } finally {
+            setspinner(false);
+
+        }
+
+
+
+
+
 
 
     }
+
+
     return (
         <dialog open={DeleteModels} className="fixed z-50 inset-0 overflow-y-auto">
             <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -34,7 +61,8 @@ const DeleteModel = ({DeleteModels,setDeleteModels,category,test,SetTest}:Delete
                     <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
                 </div>
                 <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div
+                    className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                     <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div className="sm:flex sm:items-start">
                             <button onClick={() => {
@@ -55,7 +83,10 @@ const DeleteModel = ({DeleteModels,setDeleteModels,category,test,SetTest}:Delete
                                             Are you sure you want to delete this category? All of your data will be
                                             permanently removed. This action cannot be undone.
                                         </p>
-                                        <input type="text" placeholder="Type 'Delete' to confirm" value={deletsString} onChange={(e) => {setDeletsString(e.target.value)}}
+                                        <input type="text" placeholder="Type 'Delete' to confirm" value={deletsString}
+                                               onChange={(e) => {
+                                                   setDeletsString(e.target.value)
+                                               }}
                                                className="mt-4 p-2 w-full border border-gray-300 rounded-md"/>
                                     </form>
                                 </div>
@@ -63,7 +94,7 @@ const DeleteModel = ({DeleteModels,setDeleteModels,category,test,SetTest}:Delete
                         </div>
                     </div>
                     <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                        <button type="button" onClick={DeleteCat}
+                        <button type="button" onClick={handelDelete}
                                 className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
                             Delete
                         </button>
@@ -77,8 +108,7 @@ const DeleteModel = ({DeleteModels,setDeleteModels,category,test,SetTest}:Delete
                 </div>
             </div>
         </dialog>
-
     );
 };
 
-export default DeleteModel;
+export default DeleteSubcat;

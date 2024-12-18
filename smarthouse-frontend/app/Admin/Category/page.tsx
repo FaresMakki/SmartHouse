@@ -13,6 +13,7 @@ import UpdateModels from "@/components/UpdateModels";
 import {boolean} from "zod";
 import CreatingModel from "@/components/CreatingModel";
 import Spinnerbutton from "@/components/Spinner"; // Import Edit and Delete (Trash) icons
+import Link from "next/link";
 
 const Page = () => {
     const [CategoryList, setCategoryList] = useState([])
@@ -45,6 +46,11 @@ const Page = () => {
         fetchCategories()
     }, [test]);
 
+    function navigate(_id: any) {
+        const navigate = useNavigate();
+        navigate('/products');
+    }
+
     return (
         <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-gray-50 text-gray-800">
             <AdminSideBar />
@@ -75,7 +81,7 @@ const Page = () => {
                     <TableBody>
                         {CategoryList.length > 0 ? (
                             CategoryList.map((category) => (
-                                <TableRow key={category._id} className="hover:bg-gray-100 transition duration-200">
+                                <TableRow key={category._id}  className="hover:bg-gray-100 transition duration-200">
                                     {/* Category Name */}
                                     <TableCell
                                         className="px-4 py-2 text-gray-900"
@@ -85,7 +91,11 @@ const Page = () => {
                                             textTransform: 'capitalize',
                                         }}
                                     >
-                                        {category.category}
+                                        {/*{category.category}*/}
+                                        <Link href={`Category/${category._id}`}>
+                                            {category.category}
+                                        </Link>
+
                                     </TableCell>
 
                                     {/* Created At */}

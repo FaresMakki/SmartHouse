@@ -11,31 +11,17 @@ const deviceSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    modelId: {
+    modelName: {
         type: String,
         required: true
     },
-    status: {
-        type: String,
-        enum: ["on", "off"],
-        default: "off"
+    Settings: {
+        type: {},
+        required: true
     },
-    connectionType: {
+    picture: {
         type: String,
-        enum: ["Bluetooth", "Wi-Fi", "BLE", "Zigbee", "Z-Wave", "LoRaWAN", "Ethernet", "Cellular", "RFID", "NFC", "Infrared", "Thread"],
-        default: "Wi-Fi"
-    },
-    batteryLevel: {
-        type: String,
-        default: "100%"
-    },
-    powerConsumption: {
-        type: String,
-        default: "20W"
-    },
-    lastMaintenance: {
-        type: String,
-        default: "----"
+        required: true
     }
 }, {timestamps: true});
 

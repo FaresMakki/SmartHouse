@@ -9,11 +9,11 @@ const DevicesAttribute = [
     },
     {
         "category": "Connectivity",
-        "commonAttributes": ["networkSpeed", "connectedDevices"],
+        "commonAttributes": ["connectedDevices"],
     },
     {
         "category": "Sensors",
-        "commonAttributes": ["batteryLevel", "temperature", "humidity", "smokeDetected"],
+        "commonAttributes": ["batteryLevel", "temperature", "humidity", "smokeDetected","networkSpeed"],
     },
     {
         "category": "Smart Devices",

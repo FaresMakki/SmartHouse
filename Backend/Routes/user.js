@@ -18,11 +18,12 @@ router.post("/room",UserAuth,user.addroom)
 
 
 
-router.delete("/delroom/:id",UserAuth,user.deleteroom)
-router.put("/updateroom/:id",UserAuth,user.updateroom)
+router.post("/delroom/:id",UserAuth,user.deleteroom)
+router.post("/updateroom/:id",UserAuth,user.updateroom)
 router.get("/getallroom",UserAuth,user.getAllRooms)
+router.get("/getroombyid/:roomid",UserAuth,user.getRoomsbyid)
 router.post("/adddevice/:modelid/:roomId",UserAuth,user.addRoomDevice)
-router.delete("/deletedevice/:deviceId/:roomId",UserAuth,user.deleteRoomDevice)
+router.post("/deletedevice/:deviceId/:roomId",UserAuth,user.deleteRoomDevice)
 router.get("/getroomdevices/:roomId",UserAuth,user.getRoomDevices)
 
 

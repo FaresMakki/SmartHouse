@@ -4,23 +4,23 @@ const product=require("../Controller/product")
 const {AdminAuth} = require("../utils/AdminAuth");
 
 
-router.post("/add",AdminAuth,product.AddProduct)
-router.post("/delete/:id",AdminAuth,product.deleteProduct)
-router.post("/update/:id",AdminAuth,product.updateProduct)
-router.get("/getall",AdminAuth,product.getAllProducts)
+router.post("/add",product.AddProduct)
+router.post("/delete/:id",product.deleteProduct)
+router.post("/update/:id",product.updateProduct)
+router.get("/getall",product.getAllProducts)
 
 
-router.post("/addSubProd/:id",AdminAuth,product.AddSubProduct)
-router.delete("/deleteSubProd/:id/:subId",AdminAuth,product.deleteSubProduct)
-router.put("/updateSubProd/:id/:subId",AdminAuth,product.updateSubProduct)
-router.get("/getSubProd/:productId",AdminAuth,product.getAllSubProducts)
+router.post("/addSubProd/:id",product.AddSubProduct)
+router.post("/deleteSubProd/:id/:subId",product.deleteSubProduct)
+router.post("/updateSubProd/:id/:subId",product.updateSubProduct)
+router.get("/getSubProd/:productId",product.getAllSubProducts)
 
 
 
 
-router.post("/addProdModel/:productId/:subProductId",AdminAuth,product.AddModelToSubProduct)
-router.delete("/deleteProdModel/:productId/:subProductId/:model_id",AdminAuth,product.deleteModelFromSubProduct)
-router.put("/updateProdModel/:productId/:subProductId/:modelid",AdminAuth,product.updateModelInSubProduct)
+router.post("/addProdModel/:productId/:subProductId",product.AddModelToSubProduct)
+router.post("/deleteProdModel/:productId/:subProductId/:model_id",AdminAuth,product.deleteModelFromSubProduct)
+router.post("/updateProdModel/:productId/:subProductId/:modelid",AdminAuth,product.updateModelInSubProduct)
 router.get("/addProdModel/:productId/:subProductId",AdminAuth,product.getAllModelsInSubProduct)
 
 

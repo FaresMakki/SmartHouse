@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import DevicesAttribute from "@/utils-front/DevicesAttributes";
-import {ADDProduct} from "@/utils-front/ProductsCalls";
+import {ADDProduct, UpdateProduct} from "@/utils-front/ProductsCalls";
 import {Activity, Home, Lightbulb, Smartphone, Wifi} from "lucide-react";
 import {FormError} from "@/components/form-error";
 import SubCategory from "@/utils-front/Lists";
-import {toast} from "sonner";
 
 const categoryIcons = {
     "Home Appliances": <Home className="text-blue-500 w-6 h-6" />,
@@ -14,15 +13,17 @@ const categoryIcons = {
     "Smart Devices": <Smartphone className="text-purple-500 w-6 h-6" />,
 };
 
-interface AddProductFormProps {
-    setlen:any;
+interface UpdateSubCatFormProps {
     setspinner:any;
     list:any;
     setlist:any;
-    setaddModel:any
+    setUpdateModel:any
+    idcat:any
+    productid:any
 }
-const AddProductForm = ({setaddModel,setlist,setspinner,setlen,list}:AddProductFormProps) => {
+const UpdateSubCatForm = ({setUpdateModel,setlist,setspinner,list,idcat,productid}:UpdateSubCatFormProps) => {
     const [deviceName, setDeviceName] = useState("");
+    // const [categoryDescription, setCategoryDescription] = useState("");
     const [deviceImage, setDeviceImage] = useState("");
     const [currentcategory, setCurrentcategory] = useState(0);
 
@@ -77,40 +78,27 @@ const AddProductForm = ({setaddModel,setlist,setspinner,setlen,list}:AddProductF
             }
 
         }
-        if (!deviceName || deviceName.trim() === "") {
-             toast.error("Device name is required.");
-            return
-        }
-
-         if (!deviceImage || deviceImage.trim() === "") {
-             toast.error("Device image is required.");
-            return
-
-        }
-
-        if (!settings || Object.keys(settings).length === 0) {
-             toast.error("Settings are required.");
-            return
-        }
-
-
-
-
-
 
         let Device = {
-             name: deviceName ,
-             picture: deviceImage ,
-            settings: settings
+            ...(deviceName && { name: deviceName }),
+            ...(deviceImage && { picture: deviceImage }),
+            ...(Object.keys(settings).length > 0 && { settings: settings })
         };
-        setaddModel(false)
+        setUpdateModel(false)
         setspinner(true)
-        setlen(list.length + 1)
+        // setlen(list.length + 1)
         const previousProducts = [...list]
 
+
         try {
-            const Dev=await ADDProduct(Device)
-            setlist([...list, Dev]);
+            console.log(1)
+            const Dev=await UpdateProduct(idcat,productid,Device)
+            console.log(2)
+
+            //@ts-ignore
+            setlist(list.map(item => item._id === Dev._id ? Dev : item));
+            console.log(3)
+
             console.log("Product added successfully");
 
         }catch (err){
@@ -118,10 +106,49 @@ const AddProductForm = ({setaddModel,setlist,setspinner,setlen,list}:AddProductF
             setlist(previousProducts);
         }finally {
             setspinner(false);
+            // setUpdateModel(false)
         }
 
 
     };
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     let settings = {}
+    //     for (const category in deviceAttributesByCategory) {
+    //         for (const attribute of deviceAttributesByCategory[category]) {
+    //             if (category === "Sensors") {
+    //                 settings[attribute] = "readOnly"
+    //
+    //             } else {
+    //                 settings[attribute] = "readWrite"
+    //             }
+    //         }
+    //
+    //     }
+    //
+    //     let Device = {
+    //         ...(deviceName && { name: deviceName }),
+    //         ...(deviceImage && { picture: deviceImage }),
+    //         ...(Object.keys(settings).length > 0 && { settings: settings })
+    //     };
+    //     setUpdateModel(false)
+    //     setspinner(true)
+    //     const previousProducts = [...list]
+    //
+    //     try {
+    //         const Dev=await ADDProduct(Device)
+    //         setlist([...list, Dev]);
+    //         console.log("Product added successfully");
+    //
+    //     }catch (err){
+    //         console.error("Error adding product:", err);
+    //         setlist(previousProducts);
+    //     }finally {
+    //         setspinner(false);
+    //     }
+    //
+    //
+    // };
 
     return (
         <form onSubmit={handleSubmit} className="space-y-7">
@@ -186,7 +213,7 @@ const AddProductForm = ({setaddModel,setlist,setspinner,setlen,list}:AddProductF
 
                 <button
                     type="submit"
-                    className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                    className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
                 >
                     Submit
                 </button>
@@ -196,4 +223,4 @@ const AddProductForm = ({setaddModel,setlist,setspinner,setlen,list}:AddProductF
     );
 };
 
-export default AddProductForm;
+export default UpdateSubCatForm;

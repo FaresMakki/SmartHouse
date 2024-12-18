@@ -175,8 +175,9 @@ exports.addroom=async (req,res)=> {
 }
 exports.addRoomDevice=async (req,res)=> {
     try{
-
+        console.log(1)
         const modelId = req.params.modelid;
+        console.log(modelId)
 
         const prod = await productmodel.aggregate([
             {
@@ -216,28 +217,37 @@ exports.addRoomDevice=async (req,res)=> {
                     description: 1,
                     "subDevice.name": 1,
                     "subDevice.picture": 1,
+                    "subDevice.settings": 1,
                     "subDevice.models.modelName": 1,
                     "subDevice.models.modelDetails": 1,
-                    "subDevice.models.picture": 1
+                    "subDevice.models.picture": 1,
+
                 }
             }
         ]);
+        console.log("-------------------------------------------------------------------------------------------------------")
+        console.log(prod[0].subDevice)
+
+        console.log("-------------------------------------------------------------------------------------------------------")
+
         const user=await usermodel.findOne({_id:req.user._id})
 
 
         const device={
             deviceType: prod[0].category,
             deviceName: prod[0].subDevice.name,
-            modelId: prod[0].subDevice.models.modelName,
-            status: "off",
-            connectionType:"Bluetooth",
-            batteryLevel:"100%",
-            powerConsumption:"20W",
-            lastMaintenance: "----",
+            modelName: prod[0].subDevice.models.modelName,
+            Settings: prod[0].subDevice.settings,
+            picture: prod[0].subDevice.picture
         }
+
         const room = user.Rooms.find(Rooms => Rooms._id.toString() === req.params.roomId);
+        console.log(1)
+
         if (!room) return res.status(404).json({ error: "Room not found." });
         room.devices.push(device);
+        console.log(1)
+
         await user.save();
 
         res.status(200).json({ success: "Device added successfully." });
@@ -247,6 +257,7 @@ exports.addRoomDevice=async (req,res)=> {
         res.status(400).json({ error: err });
     }
 }
+
 exports.deleteroom = async (req, res) => {
     try {
         const user = await usermodel.findOne({ _id: req.user._id });
@@ -283,6 +294,27 @@ exports.getAllRooms = async (req, res) => {
         res.status(400).json({error:  err });
     }
 };
+exports.getRoomsbyid = async (req, res) => {
+    const roomid = req.params.roomid; // Get the room ID from the request parameters
+
+    try {
+        // Find the user and filter the specific room
+        const user = await usermodel.findOne(
+            { _id: req.user._id, "Rooms._id": roomid }, // Ensure the user has the room
+            { "Rooms.$": 1 } // Return only the matched room
+        );
+
+        if (!user || !user.Rooms || user.Rooms.length === 0) {
+            return res.status(404).json({ error: "Room not found." });
+        }
+
+        // Return the specific room
+        res.status(200).json({ success: user.Rooms[0] });
+    } catch (err) {
+        res.status(500).json({ error: "Internal server error.", details: err.message });
+    }
+};
+
 exports.updateroom = async (req, res) => {
     try {
         const user = await usermodel.findOne({ _id: req.user._id });

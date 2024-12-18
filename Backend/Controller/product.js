@@ -25,8 +25,10 @@ exports.AddSubProduct=async (req,res)=> {
         };
         product.subDevices.push(subProd);
         await product.save();
+        const subprod = product.subDevices[product.subDevices.length - 1];
 
-        res.status(200).json({message:"Subproduct added successfully"});
+
+        res.status(200).json({message:"Subproduct added successfully",subprod});
 
     } catch (err) {
         res.status(400).json({ err });
@@ -34,6 +36,7 @@ exports.AddSubProduct=async (req,res)=> {
 }
 exports.deleteSubProduct = async (req, res) => {
     try {
+        console.log(req.params)
         let product = await prodschema.findOne({ _id: req.params.id });
 
         if (!product) {
@@ -57,6 +60,7 @@ exports.deleteSubProduct = async (req, res) => {
 };
 exports.updateSubProduct = async (req, res) => {
     try {
+        console.log(req.params)
         let product = await prodschema.findOne({ _id: req.params.id });
 
         if (!product) {
@@ -71,6 +75,7 @@ exports.updateSubProduct = async (req, res) => {
 
         if (req.body.name) subProduct.name = req.body.name;
         if (req.body.picture) subProduct.picture = req.body.picture;
+        if (req.body.settings) subProduct.settings = req.body.settings;
 
         await product.save();
 
@@ -125,7 +130,7 @@ exports.AddModelToSubProduct = async (req, res) => {
         const newModel = {
             modelName: req.body.modelName,
             modelDetails: req.body.modelDetails,
-            picture: req.body.picture
+            picture: req.body.modelpicture,
         };
 
         const result = await prodschema.updateOne(
@@ -319,7 +324,7 @@ exports.getAllProducts = async (req, res) => {
         }
 
         res.status(200).json({
-            message: "Products retrieved successfully",
+            message: "[id] retrieved successfully",
             products
         });
     } catch (err) {

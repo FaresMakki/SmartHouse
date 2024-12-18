@@ -97,13 +97,16 @@ export async function ADDProduct(device):Promise<any>{
 
         const data = await response.json();
         console.log("Product Added successfully:", data);
+
+        return data.subprod
+
     } catch (error) {
         console.error("Error updating product:", error.message);
         console.log(error.message)
     }
 };
-export async function GetAlldevices():Promise<any[]>{
-    const response=await  fetch(`http://localhost:3001/product/getSubProd/673396583ba0025fbb896fac`, {cache:'no-store'})
+export async function GetAlldevices(params):Promise<any[]>{
+    const response=await  fetch(`http://localhost:3001/product/getSubProd/${params}`, {cache:'no-store'})
     if (!response.ok) {
         throw new Error('fetch failed');
     }
@@ -111,5 +114,63 @@ export async function GetAlldevices():Promise<any[]>{
     const data= await response.json()
 
     return data.subDevices
+
+}
+export async function GetAlldevicesModels(idcat,idprod):Promise<any[]>{
+    const response=await  fetch(`http://localhost:3001/product/getSubProd/${idcat}/${idprod}`, {cache:'no-store'})
+    if (!response.ok) {
+        throw new Error('fetch failed');
+    }
+
+    const data= await response.json()
+
+    return data.subDevices
+
+}
+
+export async function deleteProduct(idcat,id):Promise<any[]>{
+    console.log("hahaha")
+    console.log(idcat,id)
+    const response=await  fetch(`http://localhost:3001/product/deleteSubProd/${idcat}/${id}`, {
+        method: "POST",
+        cache: "no-store",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    console
+    if (!response.ok) {
+        throw new Error('fetch failed');
+    }
+
+    const data= await response.json()
+
+    return data.subDevices
+
+}
+export async function UpdateProduct(idcat,id,device):Promise<any[]>{
+    const response=await  fetch(`http://localhost:3001/product/updateSubProd/${idcat}/${id}`, {
+        method: "POST",
+        cache: "no-store",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(device)
+    })
+    console
+    if (!response.ok) {
+        throw new Error('fetch failed');
+    }
+
+    const data= await response.json()
+
+    return data.subProduct
+
+}
+export async function handelasyncparams(params):Promise<any[]>{
+    const {id} = await params;
+
+
+    return id
 
 }

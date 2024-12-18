@@ -5,7 +5,7 @@ const features = [
     {
         title: "Smart Lighting",
         description: "Control your home's ambiance from anywhere",
-        image: "/placeholder.png",
+        image: "/full.jpeg",
         height: 200,
         width: 200,
         size: "col-span-1 row-span-1",
@@ -13,7 +13,7 @@ const features = [
     {
         title: "Climate Control",
         description: "Optimize your home's temperature for comfort and efficiency",
-        image: "/placeholder.png",
+        image: "/climateControl.jpg",
         height: 200,
         width: 400,
         size: "col-span-2 row-span-1",
@@ -21,35 +21,20 @@ const features = [
     {
         title: "Security",
         description: "Keep your home safe with smart locks and cameras",
-        image: "/placeholder.png",
+        image: "/Security.jpg",
         height: 400,
         width: 200,
-        size: "col-span-1 row-span-2",
+        size: "col-span-2 row-span-2",
     },
     {
         title: "Energy Management",
         description: "Monitor and reduce your energy consumption",
-        image: "/placeholder.png",
+        image: "/power.jpeg",
         height: 200,
         width: 200,
-        size: "col-span-1 row-span-1",
+        size: "col-span-1 row-span-2",
     },
-    {
-        title: "Voice Control",
-        description: "Manage your smart home with simple voice commands",
-        image: "/placeholder.png",
-        height: 200,
-        width: 200,
-        size: "col-span-1 row-span-1",
-    },
-    {
-        title: "Automated Routines",
-        description: "Create custom routines for your daily life",
-        image: "/placeholder.png",
-        height: 400,
-        width: 400,
-        size: "col-span-2 row-span-2",
-    },
+
 ]
 
 export function FeatureSection() {
@@ -67,7 +52,7 @@ export function FeatureSection() {
                                     width={feature.width}
                                     height={feature.height}
                                     layout="responsive"
-                                    objectFit="cover"
+                                    objectFit="fill"
                                 />
                             </div>
                             <div className="absolute bottom-0 left-0 right-0 p-4 bg-white bg-opacity-90">

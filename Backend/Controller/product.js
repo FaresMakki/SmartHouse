@@ -331,4 +331,20 @@ exports.getAllProducts = async (req, res) => {
         res.status(400).json({ err: err.message });
     }
 };
+exports.getAllData = async (req, res) => {
+    try {
+        const products = await prodschema.find();
+
+        if (products.length === 0) {
+            return res.status(404).json({ message: "No products found." });
+        }
+
+        res.status(200).json({
+            message: "[id] retrieved successfully",
+            products
+        });
+    } catch (err) {
+        res.status(400).json({ err: err.message });
+    }
+};
 

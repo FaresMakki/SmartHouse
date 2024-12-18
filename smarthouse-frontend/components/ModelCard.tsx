@@ -105,13 +105,13 @@ const ModelCard = ({product,prodid,deletemodel,updateModel,idcat}:SubCategoryCar
             {loading ?  (
 
                     <div
-                        className="group hover:shadow-2xl hover:scale-[1.02] transition-all  shadow-md hover:border hover:border-gray-200 duration-300 ease-in-out bg-white rounded-3xl p-4 relative overflow-hidden cursor-pointer">
+                        className="group hover:shadow-2xl hover:scale-[1.02] transition-all    hover:border hover:border-gray-200 duration-300 ease-in-out bg-orange-100 rounded-3xl p-4 relative overflow-hidden cursor-pointer">
                         {/* Card Content */}
                         <div className="flex flex-col items-center gap-4">
 
                             {Icon && (
                                 <Icon onClick={() => router.push(`${idcat}/${product._id}`)}
-                                      className="w-12 h-12 text-orange-400 transition-transform duration-300 group-hover:scale-110" />
+                                      className="w-12 h-12 text-gray-500 transition-transform duration-300 group-hover:scale-110" />
                             )}
                             <div className="text-center w-full truncate">
 

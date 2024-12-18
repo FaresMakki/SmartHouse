@@ -79,7 +79,7 @@ const Page =   ({params}: producthandelprops) => {
                     <Button onClick={() => {
                         setAddModel(true)
                     }}
-                            className=" border bg-white border-accentOrange ml-6  text-accentOrange rounded-full flex  justify-center items-center hover:bg-orange-100  "><Plus/> Add
+                            className=" border bg-white border-orange-100 ml-6  text-gray-700   rounded-full flex  justify-center items-center hover:bg-orange-100  "><Plus/> Add
                         New Category</Button>
                 </div>
 

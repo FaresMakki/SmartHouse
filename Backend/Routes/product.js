@@ -8,6 +8,7 @@ router.post("/add",product.AddProduct)
 router.post("/delete/:id",product.deleteProduct)
 router.post("/update/:id",product.updateProduct)
 router.get("/getall",product.getAllProducts)
+router.get("/getalldata",product.getAllData)
 
 
 router.post("/addSubProd/:id",product.AddSubProduct)

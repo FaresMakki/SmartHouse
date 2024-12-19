@@ -126,37 +126,7 @@ exports.getAllSubProducts = async (req, res) => {
 };
 
 
-// exports.AddModelToSubProduct = async (req, res) => {
-//     try {
-//         const newModel = {
-//             modelName: req.body.modelName,
-//             modelDetails: req.body.modelDetails,
-//             picture: req.body.modelpicture,
-//         };
-//
-//         const result = await prodschema.updateOne(
-//             {
-//                 _id: req.params.productId,
-//                 "subDevices._id": req.params.subProductId,
-//                 "subDevices.models.modelName": { $ne: newModel.modelName }
-//             },
-//             {
-//                 $push: { "subDevices.$[subProduct].models": newModel }
-//             },
-//             {
-//                 arrayFilters: [{ "subProduct._id": req.params.subProductId }]
-//             }
-//         );
-//
-//         if (result.modifiedCount === 0) {
-//             return res.status(400).json({ message: "Model already exists or sub-product not found." });
-//         }
-//
-//         res.status(200).json({ message: "Model added successfully" });
-//     } catch (err) {
-//         res.status(400).json({ err });
-//     }
-// };
+
 exports.AddModelToSubProduct = async (req, res) => {
     try {
         // Fetch the product and sub-device to get the picture
@@ -208,7 +178,21 @@ exports.AddModelToSubProduct = async (req, res) => {
             return res.status(400).json({ message: "Model already exists or sub-product not found." });
         }
 
-        res.status(200).json({ message: "Model added successfully" });
+        // Retrieve the newly added model
+        const updatedProduct = await prodschema.findOne(
+            {
+                _id: req.params.productId,
+                "subDevices._id": req.params.subProductId,
+            },
+            { "subDevices.$": 1 } // Retrieve the updated sub-device
+        );
+
+        const updatedSubDevice = updatedProduct.subDevices[0];
+        const addedModel = updatedSubDevice.models.find(
+            (model) => model.modelName === req.body.modelName
+        );
+
+        res.status(200).json({ message: "Model added successfully", model: addedModel });
     } catch (err) {
         console.error(err);
         res.status(400).json({ err });
@@ -216,8 +200,35 @@ exports.AddModelToSubProduct = async (req, res) => {
 };
 
 
+
 exports.deleteModelFromSubProduct = async (req, res) => {
     try {
+
+        console.log("-------------------------------------------------");
+
+        // First, find the product and sub-device to get the model before deleting
+        const product = await prodschema.findOne(
+            {
+                _id: req.params.productId,
+                "subDevices._id": req.params.subProductId,
+            },
+            { "subDevices.$": 1 } // Retrieve the matched sub-device
+        );
+
+        if (!product || !product.subDevices || product.subDevices.length === 0) {
+            return res.status(404).json({ message: "Sub-product not found." });
+        }
+
+        const subDevice = product.subDevices[0];
+        const modelToDelete = subDevice.models.find(
+            (model) => model._id.toString() === req.params.model_id
+        );
+
+        if (!modelToDelete) {
+            return res.status(404).json({ message: "Model not found." });
+        }
+
+        // Perform the deletion operation
         const result = await prodschema.updateOne(
             {
                 _id: req.params.productId,
@@ -231,15 +242,23 @@ exports.deleteModelFromSubProduct = async (req, res) => {
             }
         );
 
+        console.log(result);
+
         if (result.modifiedCount === 0) {
             return res.status(400).json({ message: "Model not found or sub-product not found." });
         }
 
-        res.status(200).json({ message: "Model deleted successfully" });
+        // Return the deleted model information
+        res.status(200).json({
+            message: "Model deleted successfully",
+            model: modelToDelete
+        });
     } catch (err) {
+        console.error(err);
         res.status(400).json({ err: err.message });
     }
 };
+
 exports.updateModelInSubProduct = async (req, res) => {
 
     try {

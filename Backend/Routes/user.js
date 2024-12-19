@@ -23,9 +23,16 @@ router.post("/updateroom/:id",UserAuth,user.updateroom)
 router.get("/getallroom",UserAuth,user.getAllRooms)
 router.get("/getroombyid/:roomid",UserAuth,user.getRoomsbyid)
 router.post("/adddevice/:modelid/:roomId",UserAuth,user.addRoomDevice)
+router.post("/switchstatus/:deviceId/:roomId",UserAuth,user.toggleDeviceStatus)
+
+
+
 router.post("/deletedevice/:deviceId/:roomId",UserAuth,user.deleteRoomDevice)
 router.get("/getroomdevices/:roomId",UserAuth,user.getRoomDevices)
 router.post("/addPersonelDevice/:modelid",UserAuth,user.addPersonelDevice)
+
+
+
 router.get("/getPersonelDevice",UserAuth,user.getPersonelDevices)
 
 

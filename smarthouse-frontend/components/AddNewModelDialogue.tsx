@@ -11,11 +11,10 @@ interface AddNewDeviceDialogueProps {
     setlist:any;
     AddModel: boolean;
     setAddModel: any;
-    subprodid:any,
-    idcat:any
+    idcat:any;
+    subprodid:any;
 }
-const AddNewModelDialogue = ({subprodid,idcat,setAddModel,AddModel,setlist,setlen,setspinner,list}:AddNewDeviceDialogueProps) => {
-
+const AddNewModelDialogue = ({setAddModel,AddModel,setlist,setlen,setspinner,list,idcat,subprodid}:AddNewDeviceDialogueProps) => {
 
 
 
@@ -73,10 +72,11 @@ const AddNewModelDialogue = ({subprodid,idcat,setAddModel,AddModel,setlist,setle
                         <h2 className="text-xl font-semibold text-gray-800 text-center ">Add New Device</h2>
 
                     </div>
+                    <AddModelForm subprodid={subprodid} idcat={idcat} setlen={setlen} setspinner={setspinner} list={list} setlist={setlist} setaddModel={setAddModel}/>
 
 
-                    <AddModelForm subprodid:{subprodid} idcat={idcat} setlen={setlen} setspinner={setspinner} list={list} setlist={setlist} setaddModel={setAddModel}/>
                 </div>
+
             </div>
         </dialog>
     );}

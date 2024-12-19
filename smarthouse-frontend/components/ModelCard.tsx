@@ -91,7 +91,9 @@ const ModelCard = ({product,prodid,deletemodel,updateModel,idcat}:SubCategoryCar
     useEffect(() => {
         setLoading(true);
     }, []);
-    const Icon = iconMap[product.picture] || null;
+    console.log(product)
+
+    const Icon = iconMap[product?.picture] || null;
 
 
     const router=useRouter()

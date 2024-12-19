@@ -20,7 +20,7 @@ router.get("/getSubProd/:productId",product.getAllSubProducts)
 
 
 router.post("/addProdModel/:productId/:subProductId",product.AddModelToSubProduct)
-router.post("/deleteProdModel/:productId/:subProductId/:model_id",AdminAuth,product.deleteModelFromSubProduct)
+router.post("/deleteProdModel/:productId/:subProductId/:model_id",product.deleteModelFromSubProduct)
 router.post("/updateProdModel/:productId/:subProductId/:modelid",AdminAuth,product.updateModelInSubProduct)
 router.get("/getProdModel/:productId/:subProductId",product.getAllModelsInSubProduct)
 

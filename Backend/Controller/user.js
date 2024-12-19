@@ -538,5 +538,58 @@ exports.getPersonelDevices=async (req,res)=> {
 
 
 
+exports.toggleDeviceStatus = async (req, res) => {
+    try {
+        const { roomId, deviceId } = req.params;
+        const userId = req.user._id;
+
+        // Find the user, room, and device
+        const user = await usermodel.findOne(
+            {
+                _id: userId,
+                "Rooms._id": roomId,
+                "Rooms.devices._id": deviceId
+            },
+            { "Rooms.$": 1 }
+        );
+
+        if (!user || user.Rooms.length === 0) {
+            return res.status(404).json({ message: "Room or device not found." });
+        }
+
+        // Locate the device in the room
+        const room = user.Rooms[0];
+        const device = room.devices.find(dev => dev._id.toString() === deviceId);
+
+        if (!device) {
+            return res.status(404).json({ message: "Device not found." });
+        }
+
+        // Toggle the device status
+        const newStatus = device.status === "on" ? "off" : "on";
+
+        // Update the specific device in the database
+        await usermodel.updateOne(
+            {
+                _id: userId,
+                "Rooms._id": roomId,
+                "Rooms.devices._id": deviceId
+            },
+            { $set: { "Rooms.$[room].devices.$[device].status": newStatus } },
+            { arrayFilters: [{ "room._id": roomId }, { "device._id": deviceId }] }
+        );
+
+        res.status(200).json({
+            message: `Device status toggled to ${newStatus}`,
+            device: { ...device.toObject(), status: newStatus }
+        });
+    } catch (err) {
+        res.status(400).json({ err: err.message });
+    }
+};
+
+
+
+
 
 

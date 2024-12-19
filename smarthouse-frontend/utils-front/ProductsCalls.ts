@@ -192,10 +192,31 @@ export async function AddModel(prodid,subprodid,model):Promise<any>{
         const data = await response.json();
         console.log("Product Added successfully:", data);
 
-        return data.subprod
+        return data.model
 
     } catch (error) {
         console.error("Error updating product:", error.message);
         console.log(error.message)
     }
 };
+
+
+export async function deleteModel(idcat,id,idmodel):Promise<any[]>{
+    console.log(idcat,id)
+    const response=await  fetch(`http://localhost:3001/product/deleteProdModel/${idcat}/${id}/${idmodel}`, {
+        method: "POST",
+        cache: "no-store",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    console
+    if (!response.ok) {
+        throw new Error('fetch failed');
+    }
+
+    const data= await response.json()
+
+    return data.model
+
+}

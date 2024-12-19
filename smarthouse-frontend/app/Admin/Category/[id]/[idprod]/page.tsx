@@ -49,7 +49,6 @@ const Page =   ({params}: producthandelprops) => {
         try {
             const categories = await GetAlldevicesModels(id,idprod);
             await setProductList(categories);
-            console.log(categories)
         } catch (error) {
             console.error("Error fetching categories:", error);
         } finally {
@@ -132,8 +131,8 @@ const Page =   ({params}: producthandelprops) => {
                     </div>
                 )
                 }
-                <AddNewModelDialogue subprodid:{idprod} idcat={id} setlen={setLen} setspinner={setspinner} list={ProductList} setlist={setProductList}  setAddModel={setAddModel} AddModel={AddModel} />
-                {/*<DeleteModelDialogue DeleteModels={DeleteModel} setDeleteModels={setDeleteModel} idcat={id} productid={prodID} list={ProductList} setlist={setProductList} setspinner={setspinner} setlen={setLen} />*/}
+                <AddNewModelDialogue idcat={id} subprodid={idprod} setlen={setLen} setspinner={setspinner} list={ProductList} setlist={setProductList}  setAddModel={setAddModel} AddModel={AddModel} />
+                <DeleteModelDialogue idmodel={prodID} DeleteModels={DeleteModel} setDeleteModels={setDeleteModel} idcat={id} productid={idprod} list={ProductList} setlist={setProductList} setspinner={setspinner} setlen={setLen} />
                 {/*<UpdateModelDialogue productid={prodID}  setspinner={setspinner} list={ProductList} idcat={id} setlist={setProductList} UpdateModel={UpdateModel} setUpdateModel={setUpdateModel}/>*/}
             </div>
         </div>

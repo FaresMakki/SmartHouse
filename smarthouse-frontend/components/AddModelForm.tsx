@@ -67,150 +67,24 @@ interface AddProductFormProps {
     list:any;
     setlist:any;
     setaddModel:any
-    idcat:any;
     subprodid:any;
+    idcat:any;
 }
 const AddModelForm = ({subprodid,idcat,setaddModel,setlist,setspinner,setlen,list}:AddProductFormProps) => {
     const [Modelname, setModelname] = useState("")
     const [Modeldetail, setModeldetail] = useState("")
 
-    const [deviceAttributesByCategory, setDeviceAttributesByCategory] = useState({});
 
 
 
 
 
-    const deviceIconList = [
-        // **Smart Devices**
-        { id: "Smartphone", icon: Smartphone },
-        { id: "Tablet", icon: Tablet },
-        { id: "Laptop", icon: Laptop },
-        { id: "Monitor", icon: Monitor },
-        { id: "SmartWatch", icon: Watch },
-        { id: "Gamepad", icon: Gamepad2 },
-        { id: "Headphones", icon: Headphones },
-        { id: "Keyboard", icon: Keyboard },
-        { id: "Mouse", icon: Mouse },
-        { id: "VR Headset", icon: Activity }, // Approximation for VR gear.
-        { id: "E-Reader", icon: BookOpen },
-
-        // **Entertainment**
-        { id: "Tv", icon: Tv },
-        { id: "Projector", icon: Camera }, // Approximation for now.
-        { id: "Speaker", icon: Volume2 },
-        { id: "Soundbar", icon: VolumeX },
-        { id: "Home Theater", icon: Music },
-        { id: "Radio", icon: Radio },
-
-        // **Home Appliances - Kitchen**
-        { id: "Refrigerator", icon: Refrigerator },
-        { id: "WashingMachine", icon: WashingMachine },
-        { id: "Microwave", icon: Thermometer },
-        { id: "Oven", icon: Flame },
-        { id: "Juicer", icon: Droplet },
-        { id: "Blender", icon: Filter },
-        { id: "Toaster", icon: Flame },
-        { id: "Coffee Maker", icon: Coffee },
-        { id: "Dishwasher", icon: Droplet },
-        { id: "Pressure Cooker", icon: Thermometer },
-        { id: "Rice Cooker", icon: UtensilsCrossed },
-
-        // **Home Appliances - General**
-        { id: "Vacuum Cleaner", icon: Wind },
-        { id: "Water Heater", icon: Droplet },
-        { id: "Fan", icon: Fan },
-        { id: "Air Conditioner", icon: Snowflake },
-        { id: "Air Purifier", icon: Wind },
-        { id: "Heater", icon: Flame },
-        { id: "Dehumidifier", icon: Droplet },
-        //88888888888888888888888888888888888
-        { id: "Humidifier", icon: Droplet },
-        { id: "Iron", icon: Shield },
-        { id: "Hair Dryer", icon: Wind },
-        { id: "Electric Shaver", icon: Shield },
-        { id: "Electric Toothbrush", icon: Shield },
-        { id: "Scale", icon: Target },
-        // **Lighting**
-        { id: "Lightbulb", icon: Lightbulb },
-        { id: "Ceiling Light", icon: Lightbulb },
-        { id: "Desk Lamp", icon: Lamp },
-        { id: "Spotlight", icon: Flashlight },
-        { id: "LED Strip", icon: Lightbulb },
-        { id: "Outdoor Light", icon: Sun },
-
-        // **Network and Connectivity**
-        { id: "Router", icon: Router },
-        { id: "Switch", icon: HardDrive },
-        { id: "Wifi", icon: Wifi },
-        { id: "Signal Booster", icon: Signal },
-        { id: "Network Amplifier", icon: Antenna },
-        { id: "Ethernet Hub", icon: Link },
-
-        // **Security and Monitoring**
-        { id: "Camera", icon: Camera },
-        { id: "Doorbell Camera", icon: Bell },
-        { id: "Motion Sensor", icon: Activity },
-        { id: "Smoke Detector", icon: AlertCircle },
-        { id: "Glass Break Sensor", icon: ShieldAlert },
-        { id: "Door Lock", icon: Lock },
-        { id: "Garage Door Opener", icon: Key },
-
-        // **Wearable Devices**
-        { id: "Fitness Band", icon: Activity },
-        { id: "Medical Monitor", icon: Heart },
-        { id: "Smart Glasses", icon: Glasses },
-
-        // **Pet and Feeder Devices**
-        { id: "Pet Feeder", icon: Bone },
-        { id: "Pet Camera", icon: Camera },
-        { id: "Smart Collar", icon: Activity },
-
-        // **Sensors**
-        { id: "Temperature Sensor", icon: Thermometer },
-        { id: "Humidity Sensor", icon: Droplet },
-        { id: "Air Quality Sensor", icon: Wind },
-        { id: "Light Sensor", icon: Eye },
-        { id: "Proximity Sensor", icon: Target },
-        { id: "Tilt Sensor", icon: CornerUpRight },
-
-        // **Energy Management**
-        { id: "Smart Plug", icon: Plug },
-        { id: "Power Strip", icon: Plug },
-        { id: "Solar Panel", icon: Sun },
-        { id: "Battery Backup", icon: Battery },
-        { id: "Smart Meter", icon: Activity },
-
-        // **Transportation**
-        { id: "Car Charger", icon: BatteryCharging },
-        { id: "EV Charger", icon: BatteryCharging },
-        { id: "Garage Door Opener", icon: Key },
-
-        // **Other Accessories**
-        { id: "3D Printer", icon: Printer },
-        { id: "Printer", icon: Printer },
-        { id: "Scanner", icon: Printer },
-        { id: "Drone", icon: Wind },
-        { id: "Thermostat", icon: Thermometer },
-        { id: "Weather Station", icon: CloudLightning },
-    ];
 
 
 
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        let settings = {}
-        for (const category in deviceAttributesByCategory) {
-            for (const attribute of deviceAttributesByCategory[category]) {
-                if (category === "Sensors") {
-                    settings[attribute] = "readOnly"
 
-                } else {
-                    settings[attribute] = "readWrite"
-                }
-            }
-
-        }
         if (!Modelname || Modelname.trim() === "") {
             toast.error("model name is required.");
             return

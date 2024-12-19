@@ -590,3 +590,5 @@ exports.toggleDeviceStatus = async (req, res) => {
 
 
 
+
+

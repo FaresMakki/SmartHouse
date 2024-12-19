@@ -56,4 +56,23 @@ router.get('/callback', passport.authenticate('google', { failureRedirect: '/',s
     res.redirect('http://localhost:3000/home');
 });
 
+
+router.get("/auth/verify", (req, res) => {
+    console.log("dfadazd")
+    const token = req.cookies.jwttoken;
+
+    if (!token) {
+        return res.status(401).json({ message: "No token provided" });
+    }
+
+    try {
+        // Verify the token using your JWT secret
+        jwt.verify(token, process.env.JWT_SECRET);
+        return res.status(200).json({ message: "Token is valid" });
+    } catch (error) {
+        return res.status(401).json({ message: "Invalid token" });
+    }
+});
+
+
 module.exports=router

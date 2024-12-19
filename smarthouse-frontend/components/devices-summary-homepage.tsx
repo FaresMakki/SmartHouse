@@ -7,7 +7,7 @@ import { Lightbulb, Tv, Thermometer, PlusCircle, Power, Wifi } from 'lucide-reac
 
 const devices = [
     { name: 'Living Room Light', icon: Lightbulb, status: 'On', consumption: '15W' },
-    { name: 'Smart TV', icon: Tv, status: 'Off', consumption: '0W' },
+    { name: 'Smart TV', icon: Tv, status: 'Off', consumption: '20W' },
     { name: 'Thermostat', icon: Thermometer, status: 'Active', consumption: '5W' },
 ]
 
@@ -15,7 +15,7 @@ export default function DeviceList() {
     return (
         <Card className="w-full bg-white rounded-2xl shadow-md overflow-hidden border-0 bg-opacity-80">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-xl font-bold">Connected Devices</CardTitle>
+                <CardTitle className="text-xl font-bold">Personal Devices</CardTitle>
                 <Button variant="outline" size="icon" className="rounded-full">
                     <PlusCircle className="h-4 w-4" />
                     <span className="sr-only">Add device</span>

@@ -19,18 +19,30 @@ import Link from "next/link";
 import { MoreHorizontal, Pencil, PlusCircle, Trash2 } from 'lucide-react';
 import NotAvailable from "@/components/NotAvailable";
 import RoomSkeleton from "@/components/room-skeleton";
+import DeleteConfirmationOverlay from "@/components/delete-confirmation-overlay";
+import {useRouter} from "next/navigation";
 
 interface Device {
-    name: string;
-    icon: React.ElementType;
-    status: boolean;
-    model?: string;
-    dateAdded?: string;
-    lastTurnedOn?: string;
-    consumption?: number;
+    deviceType: string;
+    deviceName: string;
+    modelName: string;
+    picture: string;
+    status: string;
+    createdAt: string;
+    updatedAt: string;
+    consumption: number;
+    Settings: {
+        temperature?: { value: number; unit: string };
+        powerState?: { value: string };
+        brightness?: { value: number };
+        color?: { value: string };
+        time?: { value: string };
+    };
+    _id: string;
 }
 
 interface Room {
+    id: string;
     name: string;
     icon: React.ElementType;
     devices: Device[];
@@ -43,6 +55,11 @@ export default function RoomsManagement() {
     const [isOverlayOpen, setIsOverlayOpen] = useState(false);
     const [fetchError, setFetchError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [deleteConfirmation, setDeleteConfirmation] = useState<{ isOpen: boolean; roomId: string | null; roomName: string }>({
+        isOpen: false,
+        roomId: null,
+        roomName: '',
+    });
 
     const getRoomIcon = (iconName: string): React.ElementType => {
         const normalizedIconName =
@@ -75,9 +92,21 @@ export default function RoomsManagement() {
                     if (data.success) {
                         setRooms(
                             data.success.map((room: any) => ({
+                                id: room._id,
                                 name: room.name,
                                 icon: getRoomIcon(room.icon),
-                                devices: room.devices || [],
+                                devices: room.devices.map((device: any) => ({
+                                    deviceType: device.deviceType,
+                                    deviceName: device.deviceName,
+                                    modelName: device.modelName,
+                                    picture: device.picture,
+                                    status: device.status,
+                                    createdAt: device.createdAt,
+                                    updatedAt: device.updatedAt,
+                                    consumption: device.consumption,
+                                    Settings: device.Settings,
+                                    _id: device._id,
+                                })),
                             }))
                         );
                     } else {
@@ -102,7 +131,10 @@ export default function RoomsManagement() {
                         ...room,
                         devices: room.devices.map((device, dIndex) => {
                             if (dIndex === deviceIndex) {
-                                return { ...device, status: !device.status };
+                                return {
+                                    ...device,
+                                    status: device.status === "on" ? "off" : "on",
+                                };
                             }
                             return device;
                         }),
@@ -120,7 +152,10 @@ export default function RoomsManagement() {
                     if (room.name === selectedRoom.name) {
                         const updatedDevices = room.devices.map((device, dIndex) =>
                             dIndex === deviceIndex
-                                ? { ...device, status: !device.status }
+                                ? {
+                                    ...device,
+                                    status: device.status === "on" ? "off" : "on",
+                                }
                                 : device
                         );
                         return { ...room, devices: updatedDevices };
@@ -135,7 +170,10 @@ export default function RoomsManagement() {
                         ...prevSelectedRoom,
                         devices: prevSelectedRoom.devices.map((device, dIndex) =>
                             dIndex === deviceIndex
-                                ? { ...device, status: !device.status }
+                                ? {
+                                    ...device,
+                                    status: device.status === "on" ? "off" : "on",
+                                }
                                 : device
                         ),
                     }
@@ -152,11 +190,43 @@ export default function RoomsManagement() {
         return columns;
     };
 
+    const router = useRouter();
+
     const columns = distributeRooms(rooms, 3);
 
     const openRoomOverlay = (room: Room) => {
         setSelectedRoom(room);
         setIsOverlayOpen(true);
+    };
+
+    const openDeleteConfirmation = (roomId: string, roomName: string) => {
+        setDeleteConfirmation({ isOpen: true, roomId, roomName });
+    };
+
+    const closeDeleteConfirmation = () => {
+        setDeleteConfirmation({ isOpen: false, roomId: null, roomName: '' });
+    };
+
+    const handleDeleteRoom = async () => {
+        if (deleteConfirmation.roomId) {
+            try {
+                const response = await fetch(`http://localhost:3001/user/delroom/${deleteConfirmation.roomId}`, {
+                    method: 'POST',
+                    credentials: 'include',
+                });
+
+                if (response.ok) {
+                    setRooms(prevRooms => prevRooms.filter(room => room.id !== deleteConfirmation.roomId));
+                    closeDeleteConfirmation();
+                } else {
+                    console.error('Failed to delete room');
+                    // Optionally, show an error message to the user
+                }
+            } catch (error) {
+                console.error('Error deleting room:', error);
+                // Optionally, show an error message to the user
+            }
+        }
     };
 
     return (
@@ -184,7 +254,7 @@ export default function RoomsManagement() {
                     </Link>
                 </motion.div>
                 {isLoading ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {[...Array(8)].map((_, index) => (
                             <RoomSkeleton key={index} />
                         ))}
@@ -194,7 +264,7 @@ export default function RoomsManagement() {
                 ) : rooms.length === 0 ? (
                     <NotAvailable />
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {rooms.map((room, roomIndex) => {
                             const RoomIcon = room.icon;
                             return (
@@ -221,29 +291,30 @@ export default function RoomsManagement() {
                                                 </div>
                                                 <DropdownMenu>
                                                     <DropdownMenuTrigger asChild>
-                                                        <Button
-                                                            variant="ghost"
-                                                            className="h-8 w-8 p-0"
-                                                        >
-                              <span className="sr-only">
-                                Open menu
-                              </span>
+                                                        <Button variant="ghost" className="h-8 w-8 p-0">
+                                                            <span className="sr-only">Open menu</span>
                                                             <MoreHorizontal className="h-4 w-4" />
                                                         </Button>
                                                     </DropdownMenuTrigger>
                                                     <DropdownMenuContent align="end">
-                                                        <DropdownMenuItem>
+                                                        <DropdownMenuItem onSelect={() => router.push(`/rooms/${room.id}/addDevice`)}>
+                                                            <PlusCircle className="mr-2 h-4 w-4" />
+                                                            <span>Add Device</span>
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem onSelect={() => router.push(`/rooms/${room.id}/editRoom`)}>
                                                             <Pencil className="mr-2 h-4 w-4" />
                                                             <span>Edit</span>
                                                         </DropdownMenuItem>
-                                                        <DropdownMenuItem>
+                                                        <DropdownMenuItem onSelect={() => openDeleteConfirmation(room.id, room.name)}>
                                                             <Trash2 className="mr-2 h-4 w-4" />
                                                             <span>Delete</span>
                                                         </DropdownMenuItem>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
+
                                             </div>
                                             <DeviceGrid
+                                                roomId={room.id}
                                                 devices={room.devices}
                                                 toggleDeviceStatus={(deviceIndex) =>
                                                     toggleDeviceStatus(
@@ -270,6 +341,12 @@ export default function RoomsManagement() {
                     toggleDeviceStatus={toggleDeviceStatusInOverlay}
                 />
             )}
+            <DeleteConfirmationOverlay
+                isOpen={deleteConfirmation.isOpen}
+                onClose={closeDeleteConfirmation}
+                onConfirm={handleDeleteRoom}
+                object={deleteConfirmation.roomName}
+            />
         </div>
     );
 }

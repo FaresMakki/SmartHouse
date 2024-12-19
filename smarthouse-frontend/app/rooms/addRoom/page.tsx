@@ -90,9 +90,33 @@ export default function AddRoom() {
     }
 
     const handleAddDevice = () => {
-        // Placeholder for adding a device
-        console.log('Add device functionality to be implemented')
-    }
+        startTransition(() => {
+            form.handleSubmit((data) => {
+                fetch('http://localhost:3001/user/room', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        name: data.name,
+                        icon: data.icon,
+                        type: data.nature,
+                    }),
+                })
+                    .then((response) => response.json())
+                    .then((result) => {
+                        if (result.success && result.room && result.room._id) {
+                            // Navigate to the add device page with the roomId
+                            router.push(`/rooms/${result.room._id}/addDevice`);
+                        } else {
+                            setError(result.message || 'Failed to save the room before adding a device.');
+                        }
+                    })
+                    .catch(() => setError('Network error, please try again later.'));
+            })();
+        });
+    };
+
+
 
     const router = useRouter();
 

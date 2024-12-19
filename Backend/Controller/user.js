@@ -151,37 +151,36 @@ exports.AccountActivation=async (req,res)=> {
         return  res.status(400).json({ err });
     }
 }
-exports.addroom=async (req,res)=> {
-    try{
-        const user=await usermodel.findOne({_id:req.user._id})
+exports.addroom = async (req, res) => {
+    try {
+        const user = await usermodel.findOne({ _id: req.user._id });
 
-        if (!user){
-            return res.status(400).json({error:"user does not exist"})
-
+        if (!user) {
+            return res.status(400).json({ error: "User does not exist" });
         }
+
         const room = {
-            name:req.body.name,
-            icon:req.body.icon,
-            nature:req.body.type,
-            devices:[]
-        }
-        user.Rooms.push(room)
-        const saveduser=user.save()
-        const addedRoom = saveduser.Rooms[saveduser.Rooms.length - 1];
+            name: req.body.name,
+            icon: req.body.icon,
+            nature: req.body.type,
+            devices: [],
+        };
 
+        user.Rooms.push(room);
 
+        const savedUser = await user.save();
 
-        res.status(200).json({ success: "Room added successfully" ,room: addedRoom });
+        const addedRoom = savedUser.Rooms[savedUser.Rooms.length - 1];
 
+        res.status(200).json({ success: "Room added successfully", room: addedRoom });
     } catch (err) {
         res.status(400).json({ err });
     }
-}
+};
+
 exports.addRoomDevice=async (req,res)=> {
     try{
-        console.log(1)
         const modelId = req.params.modelid;
-        console.log(modelId)
 
         const prod = await productmodel.aggregate([
             {
@@ -290,7 +289,6 @@ exports.deleteroom = async (req, res) => {
 exports.getAllRooms = async (req, res) => {
     try {
         const user = await usermodel.findOne({ _id: req.user._id });
-
         if (!user) {
             return res.status(400).json({ error: "User does not exist." });
         }
@@ -395,7 +393,6 @@ exports.updateroom = async (req, res) => {
 exports.deleteRoomDevice = async (req, res) => {
     try {
         const user = await usermodel.findOne({ _id: req.user._id });
-
         if (!user) {
             return res.status(400).json({ error: "User does not exist." });
         }

@@ -81,6 +81,15 @@ function RoomOverview() {
         return <div className="text-red-500">{fetchError}</div>;
     }
 
+    if (rooms.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[300px] text-gray-500">
+                <Icons.Sofa className="h-12 w-12 text-gray-400 mb-4" />
+                <p className="text-lg font-medium">No rooms available. Try adding a new one!</p>
+            </div>
+        );
+    }
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {rooms.map((room, index) => {

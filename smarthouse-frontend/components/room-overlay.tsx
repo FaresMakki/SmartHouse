@@ -184,7 +184,7 @@ const RoomOverlay: React.FC<RoomOverlayProps> = ({room, isOpen, onClose, toggleD
                                     return (
                                         <div
                                             key={index}
-                                            className={`flex items-center justify-between space-x-4 rounded-xl p-4 mb-2 cursor-pointer transition-colors duration-200 ${device.status ? "bg-emerald-200" : "bg-slate-200"}`}
+                                            className={`flex items-center justify-between space-x-4 rounded-xl p-4 mb-2 cursor-pointer transition-colors duration-200 ${isOn ? "bg-emerald-200" : "bg-slate-200"}`}
                                             onClick={() => toggleDeviceStatus(index)}
                                         >
                                             <div className="flex items-center space-x-4">

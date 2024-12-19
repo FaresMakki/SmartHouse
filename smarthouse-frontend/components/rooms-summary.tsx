@@ -32,7 +32,7 @@ export default function RoomList() {
                     return response.json();
                 })
                 .then((data) => {
-                    if (data.success) {
+                    if (data.success && data.success.length > 0) {
                         setRooms(
                             data.success.slice(0, 4).map((room: any) => ({
                                 id: room._id,
@@ -70,13 +70,18 @@ export default function RoomList() {
                 </Button>
             </CardHeader>
 
-            <CardContent>
+            <CardContent className="flex items-center justify-center min-h-[300px]">
                 {isLoading ? (
                     <div className="text-center text-gray-500">Loading rooms...</div>
                 ) : fetchError ? (
                     <div className="text-center text-black">{fetchError}</div>
+                ) : rooms.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center space-y-4 text-gray-500">
+                        <Sofa className="h-12 w-12 text-gray-400" />
+                        <p className="text-sm font-medium">No rooms available. Try adding a new one!</p>
+                    </div>
                 ) : (
-                    <div className="space-y-4">
+                    <div className="space-y-4 w-full">
                         {rooms.map((room) => {
                             const Icon = room.icon;
 
@@ -108,6 +113,7 @@ export default function RoomList() {
                     </div>
                 )}
             </CardContent>
+
         </Card>
     );
 }

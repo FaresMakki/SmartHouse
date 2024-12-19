@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
 import {ArrowLeft, Smile} from "lucide-react";
 import {Button} from "@/components/ui/button";
+import Link from "next/link";
 
 interface SideBarProps {
     isSidebarOpen: boolean;
     toggleSidebar: () => void;
 }
 
-export default function AdminSideBar()
-{
+export default function AdminSideBar() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const toggleSidebar = () => {
@@ -114,8 +114,8 @@ export default function AdminSideBar()
                                 <span className="ml-2 text-sm tracking-wide truncate">Available Tasks</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="#"
+                        <li><Link href={"/Admin/clients"}>
+                            <div
                                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
             <span className="inline-flex justify-center items-center ml-4">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -125,8 +125,9 @@ export default function AdminSideBar()
                                 <span className="ml-2 text-sm tracking-wide truncate">Clients</span>
                                 <span
                                     className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-green-500 bg-green-50 rounded-full">15</span>
-                            </a>
+                            </div></Link>
                         </li>
+
                         <li className="px-5">
                             <div className="flex flex-row items-center h-8">
                                 <div className="text-sm font-light tracking-wide text-gray-500">Settings</div>

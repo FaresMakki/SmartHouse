@@ -1,5 +1,6 @@
 const adminmodule = require("../Models/admin");
 const bcrypt = require("bcryptjs");
+const usermodel=require("../Models/user")
 const {loginschema} = require("../utils/ValidationShemas");
 const {setcookies} = require("../utils/generateToken");
 
@@ -37,7 +38,6 @@ exports.Signup=async (req,res)=> {
 
 exports.login=async (req,res)=> {
     try{
-
 
         const validation=loginschema.safeParse({
             e_mail:req.body.e_mail,
@@ -77,6 +77,18 @@ exports.login=async (req,res)=> {
         res.status(400).json({ err });
     }
 }
+
+exports.getClients=async (req,res)=> {
+
+    try{
+        const clients=await usermodel.find();
+        res.status(200).json({clients});
+    } catch (err) {
+        res.status(400).json({ err });
+    }
+
+}
+
 
 
 

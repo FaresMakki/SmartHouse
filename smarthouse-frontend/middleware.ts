@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const publicRoutes = [
+    "/",  // Root is now public
     "/terms",
     "/cookiepolicy",
     "/not-found",
@@ -11,7 +12,6 @@ const publicRoutes = [
 ];
 
 const authOnlyRoutes = [
-    "/",
     "/auth/login",
     "/auth/register",
     "/auth/confirmation",
@@ -20,6 +20,11 @@ const authOnlyRoutes = [
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
     const jwtToken = req.cookies.get("jwttoken")?.value;
+
+    // Skip middleware for public directory and its contents
+    if (pathname.startsWith('/public/') || pathname.endsWith('.json')) {
+        return NextResponse.next();
+    }
 
     // First verify the token with your backend
     let isValidToken = false;
@@ -39,7 +44,7 @@ export async function middleware(req: NextRequest) {
         }
     }
 
-    // If logged in and trying to access auth-only routes, redirect to dashboard
+    // If logged in and trying to access auth-only routes, redirect to home
     if (isValidToken && authOnlyRoutes.includes(pathname)) {
         const homeUrl = new URL("/home", req.url);
         return NextResponse.redirect(homeUrl);
@@ -62,6 +67,9 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
     matcher: [
-        '/((?!api|_next/static|_next/image|favicon.ico).*)',
+        // Skip Next.js internals and all static files, unless found in search params
+        '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+        // Always run for API routes
+        '/(api|trpc)(.*)',
     ],
-};
+}

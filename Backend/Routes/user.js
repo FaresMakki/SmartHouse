@@ -58,7 +58,6 @@ router.get('/callback', passport.authenticate('google', { failureRedirect: '/',s
 
 
 router.get("/auth/verify", (req, res) => {
-    console.log("dfadazd")
     const token = req.cookies.jwttoken;
 
     if (!token) {

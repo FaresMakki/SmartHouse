@@ -1,7 +1,7 @@
 const DevicesAttribute = [
     {
         "category": "Home Appliances",
-        "commonAttributes": ["powerState", "energyConsumption", "temperature", "fanSpeed", "doorOpen", "timeRemaining", "powerLevel"],
+        "commonAttributes": [  "temperature", "fanSpeed", "doorOpen", "timeRemaining", "powerLevel"],
     },
     {
         "category": "Lighting",
@@ -9,15 +9,15 @@ const DevicesAttribute = [
     },
     {
         "category": "Connectivity",
-        "commonAttributes": ["connectedDevices"],
+        "commonAttributes": ["connectedDevices","SSID","Password"],
     },
     {
         "category": "Sensors",
-        "commonAttributes": ["batteryLevel", "temperature", "humidity", "smokeDetected","networkSpeed"],
+        "commonAttributes": ["batteryLevel", "temperature", "humidity", "smokeDetected","networkSpeed","energyConsumption"],
     },
     {
         "category": "Smart Devices",
-        "commonAttributes": ["batteryLevel", "time", "alarmSet"],
+        "commonAttributes": [ "timer", "alarmSet"],
 
     },
 

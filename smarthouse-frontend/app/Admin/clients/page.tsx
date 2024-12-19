@@ -47,12 +47,14 @@ const ClientsPage = () => {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div className="min-h-screen text-black flex flex-col antialiased ">
+        <div className="min-h-screen text-black  flex flex-col antialiased ">
 
             {/* Navbar Section */}
             <AdminSideBar/>
 
             {/* Main Content Section */}
+            <div className="flex flex-col md:ml-64 transition-all duration-300 gap-y-7 mt-14 p-4 pr-0 ">
+
             <main
                 className="flex-grow flex justify-center items-center p-8">  {/* Centering both horizontally and vertically */}
                     <div className="w-full max-w-8xl flex justify-center">  {/* Center the card horizontally */}
@@ -105,6 +107,7 @@ const ClientsPage = () => {
                     </Card>
                 </div>
             </main>
+            </div>
 
             {/* Footer Section */}
             <Footer/>

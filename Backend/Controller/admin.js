@@ -70,7 +70,7 @@ exports.login=async (req,res)=> {
             LastName:admin.LastName,
         }
         const cookie=setcookies(jwtpayload)
-
+        console.log("admin log successfully")
         res.status(200).cookie("jwttoken", cookie.value,cookie.config).json({ success: "Admin authenticated successfully." });
 
     } catch (err) {

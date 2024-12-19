@@ -131,14 +131,14 @@ const AddModelForm = ({subprodid,idcat,setaddModel,setlist,setspinner,setlen,lis
             <div className="grid grid-cols-2 gap-4 mt-4">
                 <input
                     type="text"
-                    placeholder="Device Name"
+                    placeholder="ModelName"
                     value={Modelname}
                     onChange={(e) => setModelname(e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded-lg "
                 />
                 <input
                     type="text"
-                    placeholder="Device Name"
+                    placeholder="Model detail"
                     value={Modeldetail}
                     onChange={(e) => setModeldetail(e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded-lg "

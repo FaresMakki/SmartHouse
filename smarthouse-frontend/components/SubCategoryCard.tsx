@@ -145,7 +145,7 @@ const SubCategoryCard = ({product,prodid,deletemodel,updateModel,idcat}:SubCateg
 
                             {Icon && (
                                 <Icon onClick={() => router.push(`${idcat}/${product._id}`)}
-                                    className="w-12 h-12 text-orange-400 transition-transform duration-300 group-hover:scale-110" />
+                                    className="w-12 h-12  transition-transform duration-300 group-hover:scale-110" />
                             )}
                             <div className="text-center w-full truncate">
 

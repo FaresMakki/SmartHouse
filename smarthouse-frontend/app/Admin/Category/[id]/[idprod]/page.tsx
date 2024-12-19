@@ -78,7 +78,7 @@ const Page =   ({params}: producthandelprops) => {
                         setAddModel(true)
                     }}
                             className=" border bg-white border-orange-100 ml-6  text-gray-700   rounded-full flex  justify-center items-center hover:bg-orange-100  "><Plus/> Add
-                        New Category </Button>
+                         New Model </Button>
                 </div>
 
                 {spinner ? (
@@ -110,7 +110,10 @@ const Page =   ({params}: producthandelprops) => {
                                             <ModelCard idcat={id} prodid={setProdID} updateModel={setUpdateModel} deletemodel={setDeleteModel}  key={index}  product={product}/>
                                         ))
                                     ) : (
-                                        <NotAvailable/>
+                                        <div className={"h-screen w-screen items-center justify-center"}>
+                                            <NotAvailable/>
+                                        </div>
+
                                     )}
                             </div>
 

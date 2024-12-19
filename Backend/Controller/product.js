@@ -6,7 +6,6 @@ const { ObjectId } = require('mongodb');
 
 exports.AddSubProduct=async (req,res)=> {
     try{
-        console.log(req.params)
         let product=await prodschema.findOne({_id:req.params.id})
 
         if (!product) return res.status(404).send("Product not found");
@@ -37,7 +36,6 @@ exports.AddSubProduct=async (req,res)=> {
 }
 exports.deleteSubProduct = async (req, res) => {
     try {
-        console.log(req.params)
         let product = await prodschema.findOne({ _id: req.params.id });
 
         if (!product) {
@@ -61,7 +59,6 @@ exports.deleteSubProduct = async (req, res) => {
 };
 exports.updateSubProduct = async (req, res) => {
     try {
-        console.log(req.params)
         let product = await prodschema.findOne({ _id: req.params.id });
 
         if (!product) {
@@ -204,7 +201,6 @@ exports.AddModelToSubProduct = async (req, res) => {
 exports.deleteModelFromSubProduct = async (req, res) => {
     try {
 
-        console.log("-------------------------------------------------");
 
         // First, find the product and sub-device to get the model before deleting
         const product = await prodschema.findOne(
@@ -242,7 +238,6 @@ exports.deleteModelFromSubProduct = async (req, res) => {
             }
         );
 
-        console.log(result);
 
         if (result.modifiedCount === 0) {
             return res.status(400).json({ message: "Model not found or sub-product not found." });

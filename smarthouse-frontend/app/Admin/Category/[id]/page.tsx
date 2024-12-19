@@ -64,7 +64,7 @@ const Page =   ({params}: producthandelprops) => {
                         setAddModel(true)
                     }}
                             className=" border bg-white border-accentOrange ml-6  text-accentOrange rounded-full flex  justify-center items-center hover:bg-orange-100  "><Plus/> Add
-                        New Category</Button>
+                        New SubCategory</Button>
                 </div>
 
                 {spinner ? (

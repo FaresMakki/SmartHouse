@@ -13,11 +13,14 @@ const SubCatListView = ({product,prodid,deletemodel,updateModel}:SubCatListViewP
     const [loading, setLoading] = useState(true)
 
     async function handelDelete() {
+
         deletemodel(true)
         prodid(product._id)
 
+
     }
     async function handelUpdate() {
+
         updateModel(true)
         prodid(product._id)
 

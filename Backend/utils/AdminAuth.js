@@ -4,6 +4,7 @@ const {verifyTokenS} = require("./VerifyTokenS");
 
 const AdminAuth = async (req, res, next) => {
     try {
+
         const token = verifyTokenS(req);
         if (!token) return res.status(403).send("Invalid token");
 

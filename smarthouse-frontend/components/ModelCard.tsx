@@ -105,7 +105,7 @@ const ModelCard = ({product,prodid,deletemodel,updateModel,idcat}:SubCategoryCar
             {loading ?  (
 
                     <div
-                        className="group hover:shadow-2xl hover:scale-[1.02] transition-all    hover:border hover:border-gray-200 duration-300 ease-in-out bg-orange-100 rounded-3xl p-4 relative overflow-hidden cursor-pointer">
+                        className="group hover:shadow-2xl hover:scale-[1.02] transition-all    hover:border hover:border-gray-200 duration-300 ease-in-out  rounded-3xl p-4 relative overflow-hidden cursor-pointer">
                         {/* Card Content */}
                         <div className="flex flex-col items-center gap-4">
 

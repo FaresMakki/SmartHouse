@@ -228,10 +228,6 @@ exports.addRoomDevice=async (req,res)=> {
                 }
             }
         ]);
-        console.log("-------------------------------------------------------------------------------------------------------")
-        console.log(prod[0].subDevice)
-
-        console.log("-------------------------------------------------------------------------------------------------------")
 
         const user=await usermodel.findOne({_id:req.user._id})
 
@@ -247,18 +243,15 @@ exports.addRoomDevice=async (req,res)=> {
         }
 
         const room = user.Rooms.find(Rooms => Rooms._id.toString() === req.params.roomId);
-        console.log(1)
 
         if (!room) return res.status(404).json({ error: "Room not found." });
         room.devices.push(device);
-        console.log(1)
 
         await user.save();
 
         res.status(200).json({ success: "Device added successfully." });
 
     } catch (err) {
-        console.log(err)
         res.status(400).json({ error: err });
     }
 }
@@ -414,7 +407,6 @@ exports.deleteRoomDevice = async (req, res) => {
 
         res.status(200).json({ success: "Device deleted successfully." });
     } catch (err) {
-        console.log(err);
         res.status(400).json({ err });
     }
 };
@@ -433,7 +425,6 @@ exports.getRoomDevices = async (req, res) => {
 
         res.status(200).json({ success: room.devices });
     } catch (err) {
-        console.log(err);
         res.status(400).json({ err });
     }
 };
@@ -513,7 +504,6 @@ exports.addPersonelDevice=async (req,res)=> {
         res.status(200).json({ success: "Device added successfully." });
 
     } catch (err) {
-        console.log(err)
         res.status(400).json({ error: err });
     }
 }
@@ -526,7 +516,6 @@ exports.getPersonelDevices=async (req,res)=> {
         res.status(200).json({ success: "Device added successfully.",devices:user.PersonalDevices });
 
     } catch (err) {
-        console.log(err)
         res.status(400).json({ error: err });
     }
 }

@@ -54,7 +54,7 @@ export default function EmailConfirmation({ params }: EmailConfirmationProps) {
                 setCountdown((prevCountdown) => {
                     if (prevCountdown === 1) {
                         clearInterval(timer);
-                        router.push("/home");
+                        router.push("/auth/login");
                     }
                     return prevCountdown - 1;
                 });

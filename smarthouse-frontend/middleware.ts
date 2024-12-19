@@ -8,13 +8,12 @@ const publicRoutes = [
     "/not-found",
     "/auth/login",
     "/auth/register",
-    "/auth/confirmation",
+    "/auth/confirmation",  // Base route for confirmation
 ];
 
 const authOnlyRoutes = [
     "/auth/login",
     "/auth/register",
-    "/auth/confirmation",
 ];
 
 export async function middleware(req: NextRequest) {
@@ -22,7 +21,12 @@ export async function middleware(req: NextRequest) {
     const jwtToken = req.cookies.get("jwttoken")?.value;
 
     // Skip middleware for public directory and its contents
-    if (pathname.startsWith('/public/') || pathname.endsWith('.json')) {
+    if (pathname.startsWith("/public/") || pathname.endsWith(".json")) {
+        return NextResponse.next();
+    }
+
+    // Allow all paths under /auth/confirmation
+    if (pathname.startsWith("/auth/confirmation")) {
         return NextResponse.next();
     }
 
@@ -34,7 +38,7 @@ export async function middleware(req: NextRequest) {
                 method: "GET",
                 headers: {
                     "Cookie": `jwttoken=${jwtToken}`,
-                    "credentials": "include"
+                    "credentials": "include",
                 },
             });
             isValidToken = response.ok;
@@ -55,21 +59,21 @@ export async function middleware(req: NextRequest) {
         return NextResponse.next();
     }
 
-    // If no valid JWT token and trying to access protected route, redirect to login
+    // If no valid JWT token and trying to access a protected route, redirect to login
     if (!isValidToken) {
         const loginUrl = new URL("/auth/login", req.url);
         return NextResponse.redirect(loginUrl);
     }
 
-    // If has valid JWT token, allow them to proceed
+    // If the token is valid, allow the user to proceed
     return NextResponse.next();
 }
 
 export const config = {
     matcher: [
         // Skip Next.js internals and all static files, unless found in search params
-        '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+        "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
         // Always run for API routes
-        '/(api|trpc)(.*)',
+        "/(api|trpc)(.*)",
     ],
-}
+};

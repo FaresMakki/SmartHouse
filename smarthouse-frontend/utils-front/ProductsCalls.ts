@@ -80,9 +80,9 @@ export async function ADDCategory(cat,desc):Promise<any>{
     }
 };
 
-export async function ADDProduct(device):Promise<any>{
+export async function ADDProduct(idcat,device):Promise<any>{
     try {
-        const response = await fetch(`http://localhost:3001/product/addSubProd/673396583ba0025fbb896fac`, {
+        const response = await fetch(`http://localhost:3001/product/addSubProd/${idcat}`, {
             method: "POST",
             cache: "no-store",
             headers: {
@@ -174,3 +174,28 @@ export async function handelasyncparams(params):Promise<any[]>{
     return id
 
 }
+export async function AddModel(prodid,subprodid,model):Promise<any>{
+    try {
+        const response = await fetch(`http://localhost:3001/product/addProdModel/${prodid}/${subprodid}`, {
+            method: "POST",
+            cache: "no-store",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(model),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log("Product Added successfully:", data);
+
+        return data.subprod
+
+    } catch (error) {
+        console.error("Error updating product:", error.message);
+        console.log(error.message)
+    }
+};

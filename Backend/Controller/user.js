@@ -166,9 +166,12 @@ exports.addroom=async (req,res)=> {
             devices:[]
         }
         user.Rooms.push(room)
-        user.save()
+        const saveduser=user.save()
+        const addedRoom = saveduser.Rooms[saveduser.Rooms.length - 1];
 
-        res.status(200).json({ success: "Room added successfully" });
+
+
+        res.status(200).json({ success: "Room added successfully" ,room: addedRoom });
 
     } catch (err) {
         res.status(400).json({ err });
@@ -441,6 +444,95 @@ exports.getRoomDevices = async (req, res) => {
 
 
 
+exports.addPersonelDevice=async (req,res)=> {
+    try{
+        const modelId = req.params.modelid;
+        const prod  = await productmodel.aggregate([
+            {
+                $match: {
+                    "subDevices.models._id": new Types.ObjectId(modelId)
+                }
+            },
+            {
+                $project: {
+                    category: 1,
+                    description: 1,
+                    subDevice: {
+                        $filter: {
+                            input: "$subDevices",
+                            as: "subDevice",
+                            cond: {
+                                $in: [new Types.ObjectId(modelId), "$$subDevice.models._id"]
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                $unwind: "$subDevice"
+            },
+            {
+                $unwind: "$subDevice.models"
+            },
+            {
+                $match: {
+                    "subDevice.models._id": new Types.ObjectId(modelId)
+                }
+            },
+            {
+                $project: {
+                    category: 1,
+                    description: 1,
+                    "subDevice.name": 1,
+                    "subDevice.picture": 1,
+                    "subDevice.settings": 1,
+                    "subDevice.models.modelName": 1,
+                    "subDevice.models.modelDetails": 1,
+                    "subDevice.models.picture": 1,
+
+                }
+            }
+        ]);
+
+
+        const user=await usermodel.findOne({_id:req.user._id})
+
+        const transformed = transformSettings(prod[0].subDevice.settings);
+
+        const device={
+            deviceType: prod[0].category,
+            deviceName: prod[0].subDevice.name,
+            modelName: prod[0].subDevice.models.modelName,
+            Settings: transformed,
+            picture: prod[0].subDevice.picture
+
+        }
+
+        user.PersonalDevices.push(device);
+
+
+        await user.save();
+
+        res.status(200).json({ success: "Device added successfully." });
+
+    } catch (err) {
+        console.log(err)
+        res.status(400).json({ error: err });
+    }
+}
+exports.getPersonelDevices=async (req,res)=> {
+    try{
+
+
+        const user=await usermodel.findOne({_id:req.user._id})
+
+        res.status(200).json({ success: "Device added successfully.",devices:user.PersonalDevices });
+
+    } catch (err) {
+        console.log(err)
+        res.status(400).json({ error: err });
+    }
+}
 
 
 

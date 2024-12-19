@@ -6,6 +6,7 @@ const { ObjectId } = require('mongodb');
 
 exports.AddSubProduct=async (req,res)=> {
     try{
+        console.log(req.params)
         let product=await prodschema.findOne({_id:req.params.id})
 
         if (!product) return res.status(404).send("Product not found");
@@ -125,14 +126,70 @@ exports.getAllSubProducts = async (req, res) => {
 };
 
 
+// exports.AddModelToSubProduct = async (req, res) => {
+//     try {
+//         const newModel = {
+//             modelName: req.body.modelName,
+//             modelDetails: req.body.modelDetails,
+//             picture: req.body.modelpicture,
+//         };
+//
+//         const result = await prodschema.updateOne(
+//             {
+//                 _id: req.params.productId,
+//                 "subDevices._id": req.params.subProductId,
+//                 "subDevices.models.modelName": { $ne: newModel.modelName }
+//             },
+//             {
+//                 $push: { "subDevices.$[subProduct].models": newModel }
+//             },
+//             {
+//                 arrayFilters: [{ "subProduct._id": req.params.subProductId }]
+//             }
+//         );
+//
+//         if (result.modifiedCount === 0) {
+//             return res.status(400).json({ message: "Model already exists or sub-product not found." });
+//         }
+//
+//         res.status(200).json({ message: "Model added successfully" });
+//     } catch (err) {
+//         res.status(400).json({ err });
+//     }
+// };
 exports.AddModelToSubProduct = async (req, res) => {
     try {
+        // Fetch the product and sub-device to get the picture
+        const product = await prodschema.findOne(
+            {
+                _id: req.params.productId,
+                "subDevices._id": req.params.subProductId,
+            },
+            { "subDevices.$": 1 } // Retrieve only the matched sub-device
+        );
+
+        if (!product || !product.subDevices || product.subDevices.length === 0) {
+            return res.status(404).json({ message: "Sub-product not found." });
+        }
+
+        // Extract the subcategory picture
+        const subDevice = product.subDevices[0];
+        const subCategoryPicture = subDevice.picture;
+
+        if (!subCategoryPicture) {
+            return res.status(400).json({ message: "Sub-product picture not found." });
+        }
+
+        // Define the new model with the extracted picture and timestamps
         const newModel = {
             modelName: req.body.modelName,
             modelDetails: req.body.modelDetails,
-            picture: req.body.modelpicture,
+            picture: subCategoryPicture, // Use the subcategory picture
+            createdAt: new Date(), // Manually set the creation timestamp
+            updatedAt: new Date(), // Manually set the update timestamp
         };
 
+        // Update the product by adding the new model
         const result = await prodschema.updateOne(
             {
                 _id: req.params.productId,
@@ -153,9 +210,12 @@ exports.AddModelToSubProduct = async (req, res) => {
 
         res.status(200).json({ message: "Model added successfully" });
     } catch (err) {
+        console.error(err);
         res.status(400).json({ err });
     }
 };
+
+
 exports.deleteModelFromSubProduct = async (req, res) => {
     try {
         const result = await prodschema.updateOne(
@@ -181,6 +241,7 @@ exports.deleteModelFromSubProduct = async (req, res) => {
     }
 };
 exports.updateModelInSubProduct = async (req, res) => {
+
     try {
         const { modelName, modelDetails, modelpicture } = req.body;
 

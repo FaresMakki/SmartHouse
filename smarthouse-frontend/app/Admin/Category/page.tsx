@@ -46,10 +46,10 @@ const Page = () => {
         fetchCategories()
     }, [test]);
 
-    function navigate(_id: any) {
-        const navigate = useNavigate();
-        navigate('/products');
-    }
+    // function navigate(_id: any) {
+    //     const navigate = useNavigate();
+    //     navigate('/products');
+    // }
 
     return (
         <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-gray-50 text-gray-800">

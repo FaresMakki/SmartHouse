@@ -1,8 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {Card, CardContent, CardFooter} from "@/components/ui/card";
 import Image from "next/image";
-import {Edit, Trash} from "lucide-react";
-import {deleteProduct} from "@/utils-front/ProductsCalls";
+import {
+    AlertCircle, Antenna,
+    BatteryCharging,
+    Bone, BookOpen,
+    CloudLightning, Coffee,
+    CornerUpRight, Droplet,
+    Edit, Filter, Flame, Flashlight,
+    Glasses, Heart, Key, Lightbulb, Music, Radio,
+    ShieldAlert, Signal, Snowflake, Sun,
+    Target,
+    Trash, UtensilsCrossed, Volume2, VolumeX
+} from "lucide-react";
 import RoomSkeleton from "@/components/room-skeleton";
 import {useRouter} from "next/navigation";
 
@@ -19,31 +29,55 @@ const iconMap: { [key: string]: React.ComponentType } = {
     Tablet,
     Laptop,
     Monitor,
-    Tv,
-    Router,
-    Wifi,
-    Camera,
-    Printer,
+    Watch,
+    Headphones,
     Keyboard,
     Mouse,
-    Gamepad: Gamepad2,
-    Headphones,
-    Watch,
+    Activity,
+    BookOpen,
+    Tv,
+    Camera,
+    Volume2,
+    VolumeX,
+    Music,
+    Radio,
     Refrigerator,
     WashingMachine,
-    Fan,
-    Lamp,
     Thermometer,
+    Flame,
+    Droplet,
+    Filter,
+    Coffee,
+    UtensilsCrossed,
+    Wind,
+    Snowflake,
+    Lightbulb,
+    Lamp,
+    Flashlight,
+    Sun,
+    Router,
+    HardDrive,
+    Wifi,
+    Signal,
+    Antenna,
+    Link,
+    AlertCircle,
+    ShieldAlert,
+    Lock,
+    Key,
+    Heart,
+    Glasses,
+    Bone,
+    Target,
+    CornerUpRight,
     Plug,
     Battery,
-    Activity,
-    Car,
-    Shield,
-    Lock,
-    Wind,
-    Cpu,
-    HardDrive,
+    BatteryCharging,
+    Printer,
+    CloudLightning,
+    Gamepad2,
 };
+
 import {
     Smartphone,
     Tablet,
@@ -74,6 +108,7 @@ import {
     Cpu,
     HardDrive,
 } from "lucide-react";
+import Link from "next/link";
 
 const SubCategoryCard = ({product,prodid,deletemodel,updateModel,idcat}:SubCategoryCardProps) => {
     const [loading, setLoading] = useState(true)
@@ -92,7 +127,6 @@ const SubCategoryCard = ({product,prodid,deletemodel,updateModel,idcat}:SubCateg
     useEffect(() => {
         setLoading(true);
     }, []);
-    console.log(product)
     const Icon = iconMap[product.picture] || null;
 
 

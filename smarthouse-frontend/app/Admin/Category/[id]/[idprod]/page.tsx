@@ -43,13 +43,13 @@ const Page =   ({params}: producthandelprops) => {
 
 
     const { id,idprod } = use(params);
-    console.log(id,idprod)
 
     const [len, setLen] = useState(8)
     const fetchModels = async () => {
         try {
             const categories = await GetAlldevicesModels(id,idprod);
             await setProductList(categories);
+            console.log(categories)
         } catch (error) {
             console.error("Error fetching categories:", error);
         } finally {
@@ -65,7 +65,6 @@ const Page =   ({params}: producthandelprops) => {
         fetchModels()
     }, [test]);
 
-    console.log(ProductList)
 
     return (
         <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased  text-gray-800">
@@ -80,7 +79,7 @@ const Page =   ({params}: producthandelprops) => {
                         setAddModel(true)
                     }}
                             className=" border bg-white border-orange-100 ml-6  text-gray-700   rounded-full flex  justify-center items-center hover:bg-orange-100  "><Plus/> Add
-                        New Category</Button>
+                        New Category </Button>
                 </div>
 
                 {spinner ? (
@@ -133,9 +132,9 @@ const Page =   ({params}: producthandelprops) => {
                     </div>
                 )
                 }
-                <AddNewModelDialogue setlen={setLen} setspinner={setspinner} list={ProductList} setlist={setProductList}  setAddModel={setAddModel} AddModel={AddModel} />
-                <DeleteModelDialogue DeleteModels={DeleteModel} setDeleteModels={setDeleteModel} idcat={id} productid={prodID} list={ProductList} setlist={setProductList} setspinner={setspinner} setlen={setLen} />
-                <UpdateModelDialogue productid={prodID}  setspinner={setspinner} list={ProductList} idcat={id} setlist={setProductList} UpdateModel={UpdateModel} setUpdateModel={setUpdateModel}/>
+                <AddNewModelDialogue subprodid:{idprod} idcat={id} setlen={setLen} setspinner={setspinner} list={ProductList} setlist={setProductList}  setAddModel={setAddModel} AddModel={AddModel} />
+                {/*<DeleteModelDialogue DeleteModels={DeleteModel} setDeleteModels={setDeleteModel} idcat={id} productid={prodID} list={ProductList} setlist={setProductList} setspinner={setspinner} setlen={setLen} />*/}
+                {/*<UpdateModelDialogue productid={prodID}  setspinner={setspinner} list={ProductList} idcat={id} setlist={setProductList} UpdateModel={UpdateModel} setUpdateModel={setUpdateModel}/>*/}
             </div>
         </div>
     );

@@ -21,12 +21,9 @@ const DeleteSubcat = ({list,setlen,setlist,setspinner,productid,idcat,DeleteMode
             alert("Please type 'Delete' to confirm")
             return
         }
-        console.log(list)
         const previousProducts = [...list]; // Save the current state
         setlen(list.length - 1)
-        console.log(previousProducts)
         const updatedProducts = list.filter((prod) => prod._id !== productid);
-        console.log(updatedProducts)
         setlist(updatedProducts);
         setDeleteModels(false)
 
